@@ -34,6 +34,7 @@ resource "oci_core_instance" "Sp3Bastion" {
     display_name           = "${local.Sp3_env_name}-bastion vnic 00"
     hostname_label         = "${local.Sp3_env_name}-bastion"
     skip_source_dest_check = "false"
+    nsg_ids                = [local.bastion_nsg_id]
   }
   metadata = {
     ssh_authorized_keys = local.Sp3_ssh_key
