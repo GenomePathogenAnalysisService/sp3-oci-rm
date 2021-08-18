@@ -1,13 +1,11 @@
 # Pipeline to setup branch to checkout a specifc version of SP3
 
-name: oci-sp3-tests
-on:
-  create:
-    branches:
-      - sp3-v*.*.*
+name: sp3-version-setup
+on: create
 
 jobs:
   set-sp3-version:
+    if: ${{ github.ref == 'refs/heads/sp3-v*.*.*' }}
     name: Set SP3 Version
     runs-on: ubuntu-latest
     steps:
