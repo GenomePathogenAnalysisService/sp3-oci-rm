@@ -21,6 +21,7 @@ SP3_VERSION=''
 if [ ! -z "$${SP3_VERSION}" ]
 then 
     git checkout $${SP3_VERSION}
+fi
 
 # Create key pair for SSH to self
 
