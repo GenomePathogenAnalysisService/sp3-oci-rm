@@ -11,7 +11,7 @@ jobs:
     - run: echo ${{github.ref}}
 
   set-sp3-version:
-    if: ${{ github.ref == 'refs/heads/sp3-v*.*.*' }}
+    if: ${{ contains(github.ref, 'refs/heads/sp3-v') }}
     name: Set SP3 Version
     runs-on: ubuntu-latest
     steps:
