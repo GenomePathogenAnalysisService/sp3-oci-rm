@@ -21,3 +21,4 @@ jobs:
           git config user.email github-actions@github.com
           git add scripts/install_sp3.sh
           git commit -m "install script for SP3 version ${RELEASE_VERSION}"
+          git push
