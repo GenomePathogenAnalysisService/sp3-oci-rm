@@ -6,7 +6,7 @@ on: create
 jobs:
   set-sp3-version:
     if: ${{ contains(github.ref, 'refs/heads/sp3-v') }}
-    name: Set SP3 Version
+    name: Set SP3 Version (${{ github.ref }})
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
