@@ -1,0 +1,24 @@
+# Pipeline to setup branch to checkout a specifc version of SP3
+
+name: sp3-version-setup
+on: create
+
+jobs:
+  set-sp3-version:
+    if: ${{ contains(github.ref, 'refs/heads/sp3-v') }}
+    name: Set SP3 Version (${{ github.ref }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set release version
+        run: echo "GIT_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      
+      - name: 'update deploy script'
+        run: |
+          SP3_VERSION=$(echo $GIT_VERSION | cut -f 2 -d -)
+          sed -i "s/SP3_VERSION=''/SP3_VERSION='${SP3_VERSION}'/g" scripts/install_sp3.sh
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add scripts/install_sp3.sh
+          git commit -m "install script for SP3 version ${RELEASE_VERSION}"
+          git push
