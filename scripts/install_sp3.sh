@@ -20,7 +20,9 @@ GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/gitlab_key -o StrictHostKeyChecking=no
 SP3_VERSION=''
 if [ ! -z "$${SP3_VERSION}" ]
 then 
+    pushd /home/ubuntu/sp3
     git checkout $${SP3_VERSION}
+    popd
 fi
 
 # Create key pair for SSH to self
