@@ -40,7 +40,7 @@ variable "select_cust_worker_img" { default = false }
 variable "environment_type" { default = "" }
 
 locals {
-  compute_flexible_shapes   = ["VM.Standard.E3.Flex"]
+  compute_flexible_shapes   = ["VM.Standard.E3.Flex", "VM.Standard.E4.Flex", "VM.Standard.A1.Flex", "VM.Optimized3.Flex"]
   Sp3_deploy_id             = random_string.deploy_id.result
   Sp3_gitrepo_secret_id     = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaahe4ejdia3ejrsbqkv6iz2ipwngjmteeduitufuu7u35sgxrx7wna"
   Gpas_world_ssl_secret_id  = "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaahe4ejdiaepnu52uznkweta4bkiqqdptincfh3zw5uubmfgxynxdq"
