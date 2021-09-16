@@ -148,6 +148,12 @@ variables:
         - eq:
           - bastion_shape 
           - "VM.Standard.E4.Flex"
+        - eq:
+          - bastion_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Optimized3.Flex"
   headnode_image:
     type: oci:core:image:id
     dependsOn:
