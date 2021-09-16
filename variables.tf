@@ -37,6 +37,7 @@ variable "install_certs" { default = true }
 variable "create_dns" { default = true }
 variable "custom_worker_img" { default = "" }
 variable "select_cust_worker_img" { default = false }
+variable "environment_type" { default = "" }
 
 locals {
   compute_flexible_shapes   = ["VM.Standard.E3.Flex"]
