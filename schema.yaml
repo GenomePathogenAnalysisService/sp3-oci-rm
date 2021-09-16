@@ -187,16 +187,16 @@ variables:
     visible:
       or:
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.E3.Flex"
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.E4.Flex"
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.A1.Flex"
         - eq:
-          - bastion_shape
+          - headnode_shape
           - "VM.Optimized3.Flex"
   headnode_ram:
     type: integer
@@ -208,16 +208,16 @@ variables:
     visible:
       or:
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.E3.Flex"
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.E4.Flex"
         - eq:
-          - bastion_shape 
+          - headnode_shape 
           - "VM.Standard.A1.Flex"
         - eq:
-          - bastion_shape
+          - headnode_shape
           - "VM.Optimized3.Flex"
   select_cust_worker_img:
     title: "Specify a custom image ID for worker node?"
@@ -259,16 +259,16 @@ variables:
     visible:
       or:
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.E3.Flex"
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.E4.Flex"
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.A1.Flex"
         - eq:
-          - bastion_shape
+          - worker_shape
           - "VM.Optimized3.Flex"
   worker_ram:
     type: integer
@@ -280,16 +280,16 @@ variables:
     visible:
       or:
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.E3.Flex"
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.E4.Flex"
         - eq:
-          - bastion_shape 
+          - worker_shape 
           - "VM.Standard.A1.Flex"
         - eq:
-          - bastion_shape
+          - worker_shape
           - "VM.Optimized3.Flex"
   worker_min:
     type: integer
