@@ -12,6 +12,7 @@ variableGroups:
       - ${tenancy_ocid}
       - ${region}
       - ${compartment_ocid}
+      - ${environment_type}
       - ${randomise_ad}
       - ${ad}
       - ${ssh_pub_key}
@@ -69,6 +70,14 @@ variables:
   compartment_ocid:
     title: "Target Compartment"
     type: oci:identity:compartment:id
+    required: true
+  environment_type:
+    title: "Environment Type to create"
+    type: enum
+    enum:
+    - Development
+    - Staging
+    - Production
     required: true
   randomise_ad:
     type: boolean
