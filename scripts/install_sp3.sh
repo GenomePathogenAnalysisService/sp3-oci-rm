@@ -98,3 +98,4 @@ echo "---Running /home/ubuntu/sp3/sp3doc/install-oci.sh"
 ssh -i /home/ubuntu/.ssh/self_id_rsa -o StrictHostKeyChecking=no ubuntu@localhost bash /home/ubuntu/sp3/sp3doc/install-oci.sh
 echo "---Finished /home/ubuntu/sp3/sp3doc/install-oci.sh"
 
+sudo touch /tmp/sp3_up
