@@ -366,11 +366,11 @@ variables:
     type: boolean
     default: true
   install_certs:
-    title: "Install dev.gpas.world certificates?"
+    title: "Install dev.gpas.ox.ac.uk certificates?"
     type: boolean
     default: true
   create_dns:
-    title: "Create DNS record in dev.gpas.world?"
+    title: "Create DNS record in dev.gpas.ox.ac.uk?"
     type: boolean
     default: true
   deploy_1k:
