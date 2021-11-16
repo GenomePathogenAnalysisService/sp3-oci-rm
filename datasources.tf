@@ -43,7 +43,7 @@ data "template_file" "headnode_cloud_init" {
 #   template = file("${path.module}/scripts/bastion-cloud-config.template.yaml")
 
 #   vars = {
-   
+
 #   }
 # }
 
@@ -97,10 +97,10 @@ data "template_file" "install_nginx" {
   template = file("${path.module}/scripts/install_nginx.sh")
 
   vars = {
-    install_certs             = var.install_certs
-    Gpas_world_ssl_secret_id  = local.Gpas_world_ssl_secret_id
-    Gpas_world_priv_secret_id = local.Gpas_world_priv_secret_id
-    Sp3_env_name              = local.Sp3_env_name
+    install_certs                    = var.install_certs
+    Gpas_dev_ox_ac_uk_ssl_secret_id  = local.Gpas_dev_ox_ac_uk_ssl_secret_id
+    Gpas_dev_ox_ac_uk_priv_secret_id = local.Gpas_dev_ox_ac_uk_priv_secret_id
+    Sp3_env_name                     = local.Sp3_env_name
   }
 }
 
