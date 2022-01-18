@@ -9,7 +9,7 @@ fi
 
 # Let's encrypt
 
-sudo mkdir -p /etc/letsencrypt/live/dev.gpas.world
+sudo mkdir -p /etc/letsencrypt/live/dev.gpas.ox.ac.uk
 
 cat << EOF | sudo tee -a /etc/letsencrypt/options-ssl-nginx.conf
 # This file contains important security parameters. If you modify this file
@@ -38,25 +38,25 @@ ssbzSibBsu/6iGtCOGEoXJf//////////wIBAg==
 -----END DH PARAMETERS-----
 EOF
 
-# Pull the Let's Encrypt certificates for *.dev.gpas.world from Vault
+# Pull the Let's Encrypt certificates for *.dev.gpas.ox.ac.uk from Vault
 
 oci secrets secret-bundle get \
  --raw-output \
  --auth instance_principal \
- --secret-id ${Gpas_world_ssl_secret_id} \
+ --secret-id ${Gpas_dev_ox_ac_uk_ssl_secret_id} \
  --query "data.\"secret-bundle-content\".content" | base64 --decode > /home/ubuntu/.ssh/letsencrypt_fullchain.pem
 
 oci secrets secret-bundle get \
  --raw-output \
  --auth instance_principal \
- --secret-id ${Gpas_world_priv_secret_id} \
+ --secret-id ${Gpas_dev_ox_ac_uk_priv_secret_id} \
  --query "data.\"secret-bundle-content\".content" | base64 --decode > /home/ubuntu/.ssh/letsencrypt_privkey.pem
 
 # Put Let's Encrypt certs in place
-sudo cp /home/ubuntu/.ssh/letsencrypt_*.pem /etc/letsencrypt/live/dev.gpas.world/
-sudo chown root:root /etc/letsencrypt/live/dev.gpas.world/*
-sudo chmod 644 /etc/letsencrypt/live/dev.gpas.world/*
-sudo mv /etc/letsencrypt/live/dev.gpas.world/letsencrypt_fullchain.pem /etc/letsencrypt/live/dev.gpas.world/fullchain.pem
-sudo mv /etc/letsencrypt/live/dev.gpas.world/letsencrypt_privkey.pem /etc/letsencrypt/live/dev.gpas.world/privkey.pem
+sudo cp /home/ubuntu/.ssh/letsencrypt_*.pem /etc/letsencrypt/live/dev.gpas.ox.ac.uk/
+sudo chown root:root /etc/letsencrypt/live/dev.gpas.ox.ac.uk/*
+sudo chmod 644 /etc/letsencrypt/live/dev.gpas.ox.ac.uk/*
+sudo mv /etc/letsencrypt/live/dev.gpas.ox.ac.uk/letsencrypt_fullchain.pem /etc/letsencrypt/live/dev.gpas.ox.ac.uk/fullchain.pem
+sudo mv /etc/letsencrypt/live/dev.gpas.ox.ac.uk/letsencrypt_privkey.pem /etc/letsencrypt/live/dev.gpas.ox.ac.uk/privkey.pem
 
 # sudo systemctl restart nginx.service

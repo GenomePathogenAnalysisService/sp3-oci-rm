@@ -12,6 +12,7 @@ variableGroups:
       - ${tenancy_ocid}
       - ${region}
       - ${compartment_ocid}
+      #- ${environment_type}
       - ${randomise_ad}
       - ${ad}
       - ${ssh_pub_key}
@@ -70,6 +71,15 @@ variables:
     title: "Target Compartment"
     type: oci:identity:compartment:id
     required: true
+  # environment_type:
+  #   title: "Environment Type to create"
+  #   type: enum
+  #   default: Development
+  #   enum:
+  #   - Development
+  #   - Staging
+  #   - Production
+  #   required: true
   randomise_ad:
     type: boolean
     title: "Select random Availability Domain for cluster"
@@ -116,10 +126,22 @@ variables:
     title: "Bastion number of CPUs (cores)"
     description: "You can customize the number of CPU cores to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - bastion_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - bastion_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - bastion_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Standard3.Flex"
   bastion_ram:
     type: integer
     minimum: 1
@@ -128,10 +150,22 @@ variables:
     title: "Bastion Server memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - bastion_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - bastion_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - bastion_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Standard3.Flex"
   headnode_image:
     type: oci:core:image:id
     dependsOn:
@@ -157,10 +191,22 @@ variables:
     title: "Head Node number of CPUs (cores)"
     description: "You can customize the number of CPU cores to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - headnode_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - headnode_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - headnode_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Standard3.Flex"
   headnode_ram:
     type: integer
     minimum: 1
@@ -169,10 +215,22 @@ variables:
     title: "Head Node memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - headnode_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - headnode_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - headnode_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Standard3.Flex"
   select_cust_worker_img:
     title: "Specify a custom image ID for worker node?"
     description: "Check this box to specify an image ID rather than select from the image list"
@@ -211,10 +269,22 @@ variables:
     title: "Worker Node number of CPUs (cores)"
     description: "You can customize the number of CPU cores to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - worker_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - worker_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - worker_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Standard3.Flex"
   worker_ram:
     type: integer
     minimum: 1
@@ -223,10 +293,22 @@ variables:
     title: "Worker Node memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
     visible:
-      and:
+      or:
         - eq:
           - worker_shape 
           - "VM.Standard.E3.Flex"
+        - eq:
+          - worker_shape 
+          - "VM.Standard.E4.Flex"
+        - eq:
+          - worker_shape 
+          - "VM.Standard.A1.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Optimized3.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Standard3.Flex"
   worker_min:
     type: integer
     minimum: 0
@@ -302,11 +384,11 @@ variables:
     type: boolean
     default: true
   install_certs:
-    title: "Install dev.gpas.world certificates?"
+    title: "Install dev.gpas.ox.ac.uk certificates?"
     type: boolean
     default: true
   create_dns:
-    title: "Create DNS record in dev.gpas.world?"
+    title: "Create DNS record in dev.gpas.ox.ac.uk?"
     type: boolean
     default: true
   deploy_1k:
