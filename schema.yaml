@@ -139,6 +139,9 @@ variables:
         - eq:
           - bastion_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Standard3.Flex"
   bastion_ram:
     type: integer
     minimum: 1
@@ -160,6 +163,9 @@ variables:
         - eq:
           - bastion_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - bastion_shape
+          - "VM.Standard3.Flex"
   headnode_image:
     type: oci:core:image:id
     dependsOn:
@@ -198,6 +204,9 @@ variables:
         - eq:
           - headnode_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Standard3.Flex"
   headnode_ram:
     type: integer
     minimum: 1
@@ -219,6 +228,9 @@ variables:
         - eq:
           - headnode_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - headnode_shape
+          - "VM.Standard3.Flex"
   select_cust_worker_img:
     title: "Specify a custom image ID for worker node?"
     description: "Check this box to specify an image ID rather than select from the image list"
@@ -270,6 +282,9 @@ variables:
         - eq:
           - worker_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Standard3.Flex"
   worker_ram:
     type: integer
     minimum: 1
@@ -291,6 +306,9 @@ variables:
         - eq:
           - worker_shape
           - "VM.Optimized3.Flex"
+        - eq:
+          - worker_shape
+          - "VM.Standard3.Flex"
   worker_min:
     type: integer
     minimum: 0
