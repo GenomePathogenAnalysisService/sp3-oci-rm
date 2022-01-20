@@ -39,9 +39,9 @@ resource oci_core_service_gateway oke_service_gateway {
 
 
 # ------ Create Security List
-resource oci_core_security_list oke_nodeseclist {
+resource oci_core_security_list oke_node_sec_list {
   compartment_id = var.compartment_ocid
-  display_name = "oke-nodeseclist-quick-oke_poc_cluster-d03a55efa"
+  display_name = "oke-node-sec-list"
   egress_security_rules {
     description      = "Access to Kubernetes API Endpoint"
     destination      = "10.0.0.0/28"
@@ -138,7 +138,7 @@ resource oci_core_security_list oke_nodeseclist {
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
 
-resource oci_core_security_list oke-k8sApiEndpoint-cluster-security-list {
+resource oci_core_security_list oke_k8sApiEndpoint_cluster_sec_list {
   compartment_id = var.compartment_ocid
   display_name = "oke-k8sApiEndpoint-cluster-security-list"
   egress_security_rules {
@@ -203,6 +203,95 @@ resource oci_core_security_list oke-k8sApiEndpoint-cluster-security-list {
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
 
+resource oci_core_security_list oke_nodes_fss_access_sec_list {
+  compartment_id = var.compartment_ocid
+  display_name = "oke_nodes_fss_access_sec_list"
+
+  egress_security_rules {
+    protocol    = "6"
+    destination = "10.0.10.0/24"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    tcp_options {
+        min = 111
+        max = 111
+    }
+  }
+
+  egress_security_rules {
+    protocol    = "17"
+    destination = "10.0.10.0/24"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    udp_options {
+        min = 111
+        max = 111
+    }
+  }
+
+  egress_security_rules {
+    protocol    = "6"
+    destination = "10.0.10.0/24"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    tcp_options {
+        min = 2048
+        max = 2050
+    }
+  }
+
+  egress_security_rules {
+    protocol    = "17"
+    destination = "10.0.10.0/24"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    udp_options {
+        min = 2048
+        max = 2048
+    }
+  }
+
+  ingress_security_rules {
+    protocol  = "6"
+    source    = "10.0.10.0/24"
+    stateless = false
+    tcp_options {
+      source_port_range {
+        min = 111
+        max = 111
+      }
+    }
+    description = "Enable network connectivity to mount FSS."
+  }
+
+  ingress_security_rules {
+    protocol  = "17"
+    source    = "10.0.10.0/24"
+    stateless = false
+    udp_options {
+      source_port_range {
+        min = 111
+        max = 111
+      }
+    }
+    description = "Enable network connectivity to mount FSS."
+  }
+
+  ingress_security_rules {
+    protocol  = "6"
+    source    = "10.0.10.0/24"
+    stateless = false
+    tcp_options {
+      source_port_range {
+        min = 2048
+        max = 2050
+      }
+    }
+    description = "Enable network connectivity to mount FSS."
+  }
+
+  vcn_id = oci_core_vcn.oke_cluster_vcn.id
+}
 
 # ------ Create Subnets 
 resource oci_core_subnet oke_lb_subset {
@@ -228,7 +317,7 @@ resource oci_core_subnet oke_api_subset {
   prohibit_public_ip_on_vnic = "false"
   route_table_id             = oci_core_vcn.oke_cluster_vcn.default_route_table_id
   security_list_ids = [
-    oci_core_security_list.oke-k8sApiEndpoint-cluster-security-list.id,
+    oci_core_security_list.oke_k8sApiEndpoint_cluster_sec_list.id,
   ]
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
@@ -242,7 +331,8 @@ resource oci_core_subnet oke_nodes_subset {
   prohibit_public_ip_on_vnic = "true"
   route_table_id             = oci_core_route_table.oke_routetable.id
   security_list_ids = [
-    oci_core_security_list.oke_nodeseclist.id,
+    oci_core_security_list.oke_node_sec_list.id,
+    oci_core_security_list.oke_nodes_fss_access_sec_list.id
   ]
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
