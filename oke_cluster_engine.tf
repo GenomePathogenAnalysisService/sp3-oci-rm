@@ -64,6 +64,5 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     image_id                = "ocid1.image.oc1.uk-london-1.aaaaaaaaynapo7ejseprjcze5x3qedw5shivmw4kbyi4pmrhkqopht43acka"
     source_type             = "IMAGE"
   }
-  #TODO
   ssh_public_key = var.node_pool_ssh_public_key
 }
