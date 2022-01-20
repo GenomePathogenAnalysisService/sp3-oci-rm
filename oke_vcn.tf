@@ -295,6 +295,7 @@ resource oci_core_security_list oke_nodes_fss_access_sec_list {
 
 # ------ Create Subnets 
 resource oci_core_subnet oke_lb_subset {
+  display_name = "oke_lb_subset"
   cidr_block    = "10.0.20.0/24"
   compartment_id = local.Sp3_cid
   dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
@@ -309,6 +310,7 @@ resource oci_core_subnet oke_lb_subset {
 }
 
 resource oci_core_subnet oke_api_subset {
+  display_name = "oke_api_subset"
   cidr_block     = "10.0.0.0/28"
   compartment_id = local.Sp3_cid
   dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
@@ -323,6 +325,7 @@ resource oci_core_subnet oke_api_subset {
 }
 
 resource oci_core_subnet oke_nodes_subset {
+  display_name = "oke_nodes_subset"
   cidr_block = "10.0.10.0/24"
   compartment_id = local.Sp3_cid
   dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
