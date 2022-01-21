@@ -13,16 +13,8 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
   kubernetes_version = var.oke_dp_kubernetes_version
   name               = "oke_poc_cluster"
   options {
-    add_ons {
-      is_kubernetes_dashboard_enabled = "false"
-      is_tiller_enabled               = "false"
-    }
     admission_controller_options {
       is_pod_security_policy_enabled = "false"
-    }
-    kubernetes_network_config {
-      pods_cidr     = "10.244.0.0/16"
-      services_cidr = "10.96.0.0/16"
     }
     service_lb_subnet_ids = [
       oci_core_subnet.oke_lb_subset.id,
@@ -64,5 +56,4 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     image_id                = "ocid1.image.oc1.uk-london-1.aaaaaaaaynapo7ejseprjcze5x3qedw5shivmw4kbyi4pmrhkqopht43acka"
     source_type             = "IMAGE"
   }
-  ssh_public_key = var.node_pool_ssh_public_key
 }

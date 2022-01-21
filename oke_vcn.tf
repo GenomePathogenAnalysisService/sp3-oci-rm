@@ -20,7 +20,6 @@ resource oci_core_internet_gateway oke_cluster_internet_gateway {
 
 # ------ Create NAT Gateway 
 resource oci_core_nat_gateway oke_cluster_ngw {
-  block_traffic  = "false"
   compartment_id = local.Sp3_cid
   display_name = "oke cluster ngw"
   vcn_id       = oci_core_vcn.oke_cluster_vcn.id
@@ -298,11 +297,9 @@ resource oci_core_subnet oke_lb_subset {
   display_name = "oke_lb_subset"
   cidr_block    = "10.0.20.0/24"
   compartment_id = local.Sp3_cid
-  dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
   dns_label       = "lbsubnet"
   prohibit_internet_ingress  = "false"
-  prohibit_public_ip_on_vnic = "false"
-  route_table_id             = oci_core_vcn.oke_cluster_vcn.default_route_table_id
+  route_table_id = oci_core_default_route_table.oke_oci_core_default_route_table.id
   security_list_ids = [
     oci_core_vcn.oke_cluster_vcn.default_security_list_id,
   ]
@@ -313,11 +310,9 @@ resource oci_core_subnet oke_api_subset {
   display_name = "oke_api_subset"
   cidr_block     = "10.0.0.0/28"
   compartment_id = local.Sp3_cid
-  dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
   dns_label       = "apisubnet"
-  prohibit_internet_ingress  = "false"
   prohibit_public_ip_on_vnic = "false"
-  route_table_id             = oci_core_vcn.oke_cluster_vcn.default_route_table_id
+  route_table_id = oci_core_default_route_table.oke_oci_core_default_route_table.id
   security_list_ids = [
     oci_core_security_list.oke_k8sApiEndpoint_cluster_sec_list.id,
   ]
@@ -328,9 +323,7 @@ resource oci_core_subnet oke_nodes_subset {
   display_name = "oke_nodes_subset"
   cidr_block = "10.0.10.0/24"
   compartment_id = local.Sp3_cid
-  dhcp_options_id = oci_core_vcn.oke_cluster_vcn.default_dhcp_options_id
   dns_label       = "nodesubnet"
-  prohibit_internet_ingress  = "true"
   prohibit_public_ip_on_vnic = "true"
   route_table_id             = oci_core_route_table.oke_routetable.id
   security_list_ids = [
@@ -360,3 +353,13 @@ resource oci_core_route_table oke_routetable {
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
 
+resource oci_core_default_route_table oke_oci_core_default_route_table {
+	display_name = "oke-public-routetable-cluster1-6376d6cc6"
+	route_rules {
+		description = "traffic to/from internet"
+		destination = "0.0.0.0/0"
+		destination_type = "CIDR_BLOCK"
+		network_entity_id = oci_core_internet_gateway.oke_cluster_internet_gateway.id
+	}
+	manage_default_resource_id = oci_core_vcn.oke_cluster_vcn.default_route_table_id
+}
