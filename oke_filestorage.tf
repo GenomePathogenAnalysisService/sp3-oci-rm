@@ -1,13 +1,13 @@
 resource oci_file_storage_file_system oke_work_fss {
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  compartment_id      = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "File System for OKE Work"
 }
 
 
 resource oci_file_storage_mount_target oke_file_storage_mount_target {
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  compartment_id      = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "File Storage Mount Target for OKE Work"
   subnet_id = oci_core_subnet.oke_nodes_subset.id
   nsg_ids = [
@@ -29,13 +29,9 @@ resource oci_file_storage_export oke_file_storage_work_export {
 }
 
 
-
-
-
-
 resource oci_file_storage_file_system oke_data_fss {
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
-  compartment_id      = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "File System for OKE Data"
 }
 

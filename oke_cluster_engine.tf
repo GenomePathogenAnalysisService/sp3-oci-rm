@@ -11,7 +11,7 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
     is_policy_enabled = "false"
   }
   kubernetes_version = var.oke_dp_kubernetes_version
-  name               = "oke_poc_cluster"
+  name               = "sp3_nextflow_cluster"
   options {
     admission_controller_options {
       is_pod_security_policy_enabled = "false"
