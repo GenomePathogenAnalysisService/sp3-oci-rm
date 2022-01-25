@@ -49,6 +49,10 @@ data "template_file" "headnode_cloud_init" {
 
 data "template_file" "bootstrap_root" {
   template = file("${path.module}/scripts/bootstrap_root.sh")
+
+  vars = {
+    sp3_file_mount_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
+  }
 }
 data "template_file" "bootstrap_ubuntu" {
   template = file("${path.module}/scripts/bootstrap_ubuntu.sh")
