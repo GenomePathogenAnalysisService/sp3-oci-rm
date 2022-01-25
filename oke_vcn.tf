@@ -3,7 +3,7 @@ resource oci_core_vcn oke_cluster_vcn {
   cidr_blocks = [
     "10.0.0.0/16",
   ]
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke cluster vcn"
   dns_label    = "okeoxcluster"
 }
@@ -11,7 +11,7 @@ resource oci_core_vcn oke_cluster_vcn {
 
 # ------ Create Internet Gateway
 resource oci_core_internet_gateway oke_cluster_internet_gateway {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "Internet gateway for oke cluster"
   enabled      = "true"
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
@@ -20,7 +20,7 @@ resource oci_core_internet_gateway oke_cluster_internet_gateway {
 
 # ------ Create NAT Gateway 
 resource oci_core_nat_gateway oke_cluster_ngw {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke cluster ngw"
   vcn_id       = oci_core_vcn.oke_cluster_vcn.id
 }
@@ -28,7 +28,7 @@ resource oci_core_nat_gateway oke_cluster_ngw {
 
 # ------ Create Service Gateway 
 resource oci_core_service_gateway oke_service_gateway {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "Service gateway for oke cluster"
   services {
     service_id = "ocid1.service.oc1.uk-london-1.aaaaaaaatwg7f5mnzoapfunl66n2qkp4ormiykqk3hiwksum63gcyjk7ysla"
@@ -39,7 +39,7 @@ resource oci_core_service_gateway oke_service_gateway {
 
 # ------ Create Security List
 resource oci_core_security_list oke_node_sec_list {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke-node-sec-list"
   egress_security_rules {
     description      = "Access to Kubernetes API Endpoint"
@@ -138,7 +138,7 @@ resource oci_core_security_list oke_node_sec_list {
 }
 
 resource oci_core_security_list oke_k8sApiEndpoint_cluster_sec_list {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke-k8sApiEndpoint-cluster-security-list"
   egress_security_rules {
     description      = "Path discovery"
@@ -203,7 +203,7 @@ resource oci_core_security_list oke_k8sApiEndpoint_cluster_sec_list {
 }
 
 resource oci_core_security_list oke_nodes_fss_access_sec_list {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke_nodes_fss_access_sec_list"
 
   egress_security_rules {
@@ -294,8 +294,9 @@ resource oci_core_security_list oke_nodes_fss_access_sec_list {
 
 # ------ Create Subnets 
 resource oci_core_subnet oke_lb_subset {
+  display_name = "oke_lb_subset"
   cidr_block    = "10.0.20.0/24"
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   dns_label       = "lbsubnet"
   prohibit_internet_ingress  = "false"
   route_table_id = oci_core_default_route_table.oke_oci_core_default_route_table.id
@@ -306,8 +307,9 @@ resource oci_core_subnet oke_lb_subset {
 }
 
 resource oci_core_subnet oke_api_subset {
+  display_name = "oke_api_subset"
   cidr_block     = "10.0.0.0/28"
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   dns_label       = "apisubnet"
   prohibit_public_ip_on_vnic = "false"
   route_table_id = oci_core_default_route_table.oke_oci_core_default_route_table.id
@@ -318,8 +320,9 @@ resource oci_core_subnet oke_api_subset {
 }
 
 resource oci_core_subnet oke_nodes_subset {
+  display_name = "oke_nodes_subset"
   cidr_block = "10.0.10.0/24"
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   dns_label       = "nodesubnet"
   prohibit_public_ip_on_vnic = "true"
   route_table_id             = oci_core_route_table.oke_routetable.id
@@ -333,7 +336,7 @@ resource oci_core_subnet oke_nodes_subset {
 
 # ------ Create Routetable
 resource oci_core_route_table oke_routetable {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   display_name = "oke private routetable for genomics cluster"
   route_rules {
     description       = "traffic to OCI services"

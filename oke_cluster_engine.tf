@@ -1,6 +1,6 @@
 
 resource oci_containerengine_cluster oke_containerengine_cluster {
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   endpoint_config {
     is_public_ip_enabled = "true"
     nsg_ids = [
@@ -11,7 +11,7 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
     is_policy_enabled = "false"
   }
   kubernetes_version = var.oke_dp_kubernetes_version
-  name               = "oke_poc_cluster"
+  name               = "sp3_nextflow_cluster"
   options {
     admission_controller_options {
       is_pod_security_policy_enabled = "false"
@@ -26,7 +26,7 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
 
 resource oci_containerengine_node_pool oke_containerengine_node_pool {
   cluster_id     = oci_containerengine_cluster.oke_containerengine_cluster.id
-  compartment_id = var.compartment_ocid
+  compartment_id = local.Sp3_cid
   initial_node_labels {
     key   = "name"
     value = "oke_containerengine_node_pool"
