@@ -52,6 +52,7 @@ data "template_file" "bootstrap_root" {
 
   vars = {
     sp3_file_mount_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
+    oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
   }
 }
 data "template_file" "bootstrap_ubuntu" {

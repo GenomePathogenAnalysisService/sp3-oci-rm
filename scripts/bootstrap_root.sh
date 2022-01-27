@@ -32,19 +32,24 @@ systemctl restart sshd ssh
 
 sleep 10
 
-# Mount the volumes
-
-mkdir /data /work
-
-mount ${sp3_file_mount_ip}:/data /data
-mount ${sp3_file_mount_ip}:/work /work
-
 # Install kubectl
-sudo snap install kubectl --classic
+snap install kubectl --classic
+
+# Setup kube config -> /home/ubuntu/.kube/config
+oci ce cluster create-kubeconfig --cluster-id ${oke_cluster_id}
 
 # Install NFS Server
 
 apt-get install nfs-server -y
+
+# Mount the volumes
+
+mkdir /data /work
+
+echo ${sp3_file_mount_ip} 
+
+mount ${sp3_file_mount_ip}:/data /data 
+mount ${sp3_file_mount_ip}:/work /work 
 
 # Set mountd and nlockmgr port numbers
 
