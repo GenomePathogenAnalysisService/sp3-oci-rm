@@ -1,0 +1,5 @@
+name: test
+description: Helm chart for healthcare genomics POC Pod Deployment
+type: application
+version: 1.0.0
+apiVersion: v1

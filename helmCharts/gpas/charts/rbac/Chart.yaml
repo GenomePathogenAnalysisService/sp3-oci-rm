@@ -1,0 +1,5 @@
+name: rbac
+description: Helm chart for healthcare genomics service account and roles
+type: application
+version: 1.0.0
+apiVersion: v1

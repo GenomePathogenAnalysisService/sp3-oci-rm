@@ -1,0 +1,5 @@
+FROM oraclelinux:8
+
+# File Author / Maintainer
+LABEL maintainer="tom.yip@oracle.com"
+

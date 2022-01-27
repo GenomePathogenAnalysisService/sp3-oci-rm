@@ -1,0 +1,17 @@
+name: hc-genomics-sp3-helm
+description: Helm chart for healthcare genomics SP3 Application
+type: application
+apiVersion: v1
+version: 1.0.0
+dependencies:
+  - name: sp3_file_store
+    version: 1.0.0
+    condition: sp3_file_store.install
+  - name: rbac
+    version: 1.0.0
+    condition: rabc.install
+  - name: test
+    version: 1.0.0
+    condition: test.install
+
+

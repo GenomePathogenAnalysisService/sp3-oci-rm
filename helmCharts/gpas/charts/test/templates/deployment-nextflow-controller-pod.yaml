@@ -1,0 +1,54 @@
+{{- if .Values.install }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nextflow-controller-pod
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: nf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextflow-controller
+  template:
+    metadata:
+      labels:
+        app: nextflow-controller
+    spec:
+      containers:
+      - name: nextflow-controller
+        image: {{ printf "%s:%s" .Values.deploymentImageName .Values.deploymentImageTag }}
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: work
+          mountPath: /work
+        env:
+          - name: POD_TYPE
+            value: "Nextflow_Controller"
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-{{ .Values.nfs.volumn_name }}-data-pvc
+      - name: work
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-{{ .Values.nfs.volumn_name }}-work-pvc
+      imagePullSecrets:
+        - name: {{ .Values.pullSecretName }}
+      serviceAccountName: {{ .Release.Name }}-nextflow-sa
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 169.254.169.254
+        searches:
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+          - dp.oraclevcn.com
+          - node.dp.oraclevcn.com
+        options:
+          - name: ndots
+            value: "5"
+{{- end }}

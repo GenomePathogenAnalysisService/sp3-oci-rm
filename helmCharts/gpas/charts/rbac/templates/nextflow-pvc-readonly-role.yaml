@@ -1,0 +1,21 @@
+{{- if .Values.install }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}-nextflow-sa-pvc-readonly
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: {{ .Chart.Version }}
+rules:
+  -
+    apiGroups:
+      - ""
+    resources:
+      - persistentvolumeclaims
+    verbs:
+      - get
+      - watch
+      - list
+{{- end }}
