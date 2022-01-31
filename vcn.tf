@@ -118,116 +118,93 @@ resource oci_core_security_list sp3_fss_access_sec_list {
   egress_security_rules {
     protocol    = "6"
     destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
     stateless   = false
     description = "Enable network connectivity to mount FSS."
     tcp_options {
-        min = 111
-        max = 111
-    }
-  }
-
-  egress_security_rules {
-    protocol    = "17"
-    destination = "10.0.1.0/24"
-    stateless   = false
-    description = "Enable network connectivity to mount FSS."
-    udp_options {
-        min = 111
-        max = 111
+      source_port_range {
+        max = "111"
+        min = "111"
+      }
     }
   }
 
   egress_security_rules {
     protocol    = "6"
     destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
     stateless   = false
     description = "Enable network connectivity to mount FSS."
     tcp_options {
-        min = 2048
-        max = 2050
+      source_port_range {
+        max = "2050"
+        min = "2048"
+      }
     }
   }
 
   egress_security_rules {
     protocol    = "17"
     destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
     stateless   = false
     description = "Enable network connectivity to mount FSS."
     udp_options {
-        min = 2048
-        max = 2048
+      source_port_range {
+        max = "111"
+        min = "111"
+      }
     }
-  }
-
-  egress_security_rules {
-    description = "TCP access custom add"
-    protocol    = "6"
-    destination    = "10.0.1.0/24"
-    destination_type = "CIDR_BLOCK"
-    stateless   = "false"
-  }
-
-  egress_security_rules {
-    description = "UDP access custom add"
-    protocol    = "17"
-    destination    = "10.0.1.0/24"
-    destination_type = "CIDR_BLOCK"
-    stateless   = "false"
   }
 
   ingress_security_rules {
-    protocol  = "6"
-    source    = "10.0.1.0/24"
-    stateless = false
-    tcp_options {
-      source_port_range {
-        min = 111
-        max = 111
+      protocol  = "6"
+      source    = "10.0.1.0/24"
+      source_type = "CIDR_BLOCK"
+      stateless = false
+      tcp_options {
+          min = 111
+          max = 111
       }
-    }
-    description = "Enable network connectivity to mount FSS."
+      description = "Enable network connectivity to mount FSS."
   }
+
+  ingress_security_rules {
+      protocol  = "6"
+      source    = "10.0.1.0/24"
+      source_type = "CIDR_BLOCK"
+      stateless = false
+      tcp_options {
+          min = 2048
+          max = 2050
+      }
+      description = "Enable network connectivity to mount FSS."
+  }
+
 
   ingress_security_rules {
     protocol  = "17"
     source    = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
     stateless = false
     udp_options {
-      source_port_range {
         min = 111
         max = 111
-      }
     }
     description = "Enable network connectivity to mount FSS."
   }
 
+
   ingress_security_rules {
-    protocol  = "6"
+    protocol  = "17"
     source    = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
     stateless = false
-    tcp_options {
-      source_port_range {
+    udp_options {
         min = 2048
-        max = 2050
-      }
+        max = 2050 
     }
     description = "Enable network connectivity to mount FSS."
-  }
-
-  ingress_security_rules {
-    description = "TCP access custom add"
-    protocol    = "6"
-    source    = "10.0.1.0/24"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
-  }
-
-  ingress_security_rules {
-    description = "UDP access custom add"
-    protocol    = "17"
-    source    = "10.0.1.0/24"
-    source_type = "CIDR_BLOCK"
-    stateless   = "false"
   }
 
   vcn_id         = local.Sp3_vcn_id
