@@ -135,62 +135,6 @@ output "sp3headnodePrivateIP" {
   value = local.Sp3Headnode_private_ip
 }
 
-# ------ Create Block Storage Volume
-resource "oci_core_volume" "Data" {
-  # Required
-  compartment_id      = local.Sp3_cid
-  availability_domain = local.Sp3_ad
-  # Optional
-  display_name = "${local.Sp3_env_name}-data"
-  size_in_gbs  = var.hn_data_size
-  vpus_per_gb  = var.use_hp_vol ? "20" : "10"
-  depends_on   = [time_sleep.wait_compartment]
-}
-
-locals {
-  Data_id = oci_core_volume.Data.id
-}
-
-# ------ Create Block Storage Volume
-resource "oci_core_volume" "Work" {
-  # Required
-  compartment_id      = local.Sp3_cid
-  availability_domain = local.Sp3_ad
-  # Optional
-  display_name = "${local.Sp3_env_name}-work"
-  size_in_gbs  = var.hn_work_size
-  vpus_per_gb  = var.use_hp_vol ? "20" : "10"
-  depends_on   = [time_sleep.wait_compartment]
-}
-
-locals {
-  Work_id = oci_core_volume.Work.id
-}
-
-# ------ Create Block Storage Attachments
-resource "oci_core_volume_attachment" "Sp3HeadnodeDataVolumeAttachment" {
-  attachment_type                     = "paravirtualized"
-  device                              = "/dev/oracleoci/oraclevdb"
-  display_name                        = "${local.Sp3_env_name}-HeadnodeDataVolumeAttachment"
-  instance_id                         = local.Sp3Headnode_id
-  is_pv_encryption_in_transit_enabled = "false"
-  is_read_only                        = "false"
-  #is_shareable = <<Optional value not found in discovery>>
-  #use_chap = <<Optional value not found in discovery>>
-  volume_id = local.Data_id
-}
-resource "oci_core_volume_attachment" "Sp3HeadnodeWorkVolumeAttachment" {
-  attachment_type                     = "paravirtualized"
-  device                              = "/dev/oracleoci/oraclevdc"
-  display_name                        = "${local.Sp3_env_name}-HeadnodeDataVolumeAttachment"
-  instance_id                         = local.Sp3Headnode_id
-  is_pv_encryption_in_transit_enabled = "false"
-  is_read_only                        = "false"
-  #is_shareable = <<Optional value not found in discovery>>
-  #use_chap = <<Optional value not found in discovery>>
-  volume_id = local.Work_id
-}
-
 output "sp3_deploy_id" {
   value = local.Sp3_deploy_id
 }
