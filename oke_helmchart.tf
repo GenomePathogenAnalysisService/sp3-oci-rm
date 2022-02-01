@@ -22,7 +22,7 @@ provider "helm" {
 
 
 resource "helm_release" "gpas" {    
-    name = "gpas"
+    name = "default"
     provider = helm
     chart = "./helmCharts/gpas"
 
