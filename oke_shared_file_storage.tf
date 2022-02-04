@@ -67,7 +67,7 @@ resource oci_file_storage_mount_target file_storage_mount_sp3_target {
   compartment_id      = local.Sp3_cid
   display_name = "File Storage Mount Target for SP3"
   subnet_id = oci_core_subnet.Privsn001.id
-  #ip_address = "10.0.1.86"
+  ip_address = "10.0.1.86"
   nsg_ids = [
   ]
 }
