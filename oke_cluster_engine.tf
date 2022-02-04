@@ -23,6 +23,9 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
   vcn_id = oci_core_vcn.oke_cluster_vcn.id
 }
 
+locals {
+  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.oke_node_shape)
+}
 
 resource oci_containerengine_node_pool oke_containerengine_node_pool {
   cluster_id     = oci_containerengine_cluster.oke_containerengine_cluster.id
@@ -46,10 +49,13 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     }    
     size = var.oke_dp_node_count
   }
-  node_shape = "VM.Standard.E3.Flex"
-  node_shape_config {
-    memory_in_gbs = "200"
-    ocpus         = "8"
+  node_shape = var.oke_node_shape
+  dynamic "node_shape_config" {
+    for_each = local.is_flexible_node_shape ? [1] : []
+    content {
+      memory_in_gbs = var.oke_node_ram
+      ocpus         = var.oke_node_ocpus
+    }
   }
   node_source_details {
     boot_volume_size_in_gbs = "100"
