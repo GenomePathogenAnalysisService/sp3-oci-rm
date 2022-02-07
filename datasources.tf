@@ -23,6 +23,7 @@ data "template_file" "headnode_cloud_init" {
     bootstrap_root_sh_content   = base64gzip(data.template_file.bootstrap_root.rendered)
     bootstrap_ubuntu_sh_content = base64gzip(data.template_file.bootstrap_ubuntu.rendered)
     stack_info_content          = base64gzip(data.template_file.stack_info.rendered)
+    install_kubeconfig_sh_content  = base64gzip(data.template_file.install_kubeconfig.rendered)
     install_sp3_sh_content      = base64gzip(data.template_file.install_sp3.rendered)
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
   }
@@ -52,7 +53,6 @@ data "template_file" "bootstrap_root" {
 
   vars = {
     sp3_file_mount_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
-    oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
   }
 }
 data "template_file" "bootstrap_ubuntu" {
@@ -106,6 +106,14 @@ data "template_file" "install_nginx" {
     Gpas_dev_ox_ac_uk_ssl_secret_id  = local.Gpas_dev_ox_ac_uk_ssl_secret_id
     Gpas_dev_ox_ac_uk_priv_secret_id = local.Gpas_dev_ox_ac_uk_priv_secret_id
     Sp3_env_name                     = local.Sp3_env_name
+  }
+}
+
+data "template_file" "install_kubeconfig" {
+  template = file("${path.module}/scripts/install_kubeconfig.sh")
+
+  vars = {
+    oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
   }
 }
 

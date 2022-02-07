@@ -35,9 +35,6 @@ sleep 10
 # Install kubectl
 snap install kubectl --classic
 
-# Setup kube config -> /home/ubuntu/.kube/config
-oci ce cluster create-kubeconfig --cluster-id ${oke_cluster_id}
-
 # Install NFS Server
 
 apt-get install nfs-server -y

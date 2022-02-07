@@ -122,6 +122,13 @@ resource "oci_core_instance" "Sp3Headnode" {
     boot_volume_size_in_gbs = var.hn_boot_size
     #        kms_key_id              = 
   }
+
+  depends_on = [
+    oci_core_vcn.oke_cluster_vcn,
+    oci_containerengine_cluster.oke_containerengine_cluster,
+    oci_containerengine_node_pool.oke_containerengine_node_pool,
+  ]
+
   preserve_boot_volume = false
 }
 
