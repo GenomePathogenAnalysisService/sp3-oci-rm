@@ -51,6 +51,11 @@ echo ${sp3_file_mount_ip}
 mount ${sp3_file_mount_ip}:/data /data 
 mount ${sp3_file_mount_ip}:/work /work 
 
+# Add to fstab
+
+echo '${sp3_file_mount_ip}:/work /work nfs defaults 0 0' >> /etc/fstab
+echo '${sp3_file_mount_ip}:/data /data nfs defaults 0 0' >> /etc/fstab
+
 # Set mountd and nlockmgr port numbers
 
 cp /etc/default/nfs-kernel-server /etc/default/nfs-kernel-server.orig
