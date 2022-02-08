@@ -17,6 +17,11 @@ Upon completion of the deployment, an Application Information tab will be shown 
 - `datasources.tf` is used for specific functions and data sources within Terraform
 - `iam.tf` creates a dynamic group and policy to allow OCI CLI operations from the Head Node.  Optionally (default = true) creates a new compartment to house all the stack resources
 - `dns.tf` creates an entry in the test domain `dev.gpas.world` for the load balancer public IP
+- `oke_variables` creates variables relating to oke artifacts
+- `oke_vcn` creates a vcn for hosting oke cluster
+- `oke_cluster_engine` creates kubernetes cluster and node pool
+- `oke_shared_file_storage` creates fss storage and mounts for /work and /data relative to legacy vcn and newer oke vcn
+- `oke_helmchart` creates a helm resource that references a helm chart in /helmCharts
 
 ## Cloud Init Files
 The `scripts` directory contains the scripts and configuration for Cloud Init.
@@ -35,12 +40,14 @@ The `scripts` directory contains the scripts and configuration for Cloud Init.
 - run `bash /tmp/inject_pub_keys.sh` as ubuntu
 - run `bash /tmp/install_nginx.sh` as ubuntu
 - run `bash /tmp/install_sp3.sh` as ubuntu
+- run `bash /tmp/install_kubeconfig.sh` as ubuntu
 
 
 `bootstrap_root.sh` is the file containing all the commands that run as root.
 - Installs jq for JSON query
 - Partitions, formats (with ext4) the two Block Volumes
-- Adds to /etc/fstab and mounts the para-virtualisaed Block Volumes to /data and /work
+- Installs kubectl using snap
+- Adds to /etc/fstab and mounts the fss mount <mount_ip>:/data and <mount_ip>:/work to /data and /work respectively
 - Installs NFS Server
 - Configures NFS service ports to static mappings
 - Adds the NFS ports as well as TCP/80 and 443 to iptables
@@ -63,3 +70,5 @@ The `scripts` directory contains the scripts and configuration for Cloud Init.
 - Worker Node details captured in Stack Variables screen
 
 `install_nginx.sh` will, if the option is selected in the stack, pull the wildcard certificate for .dev.gpas.world from the OCI vault secret store and deploy to the Head Node
+
+`install_kubeconfig.sh` will create kubenetes config file using oci cli.
