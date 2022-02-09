@@ -53,6 +53,7 @@ variableGroups:
       - ${oke_node_ram}
       - ${file_storage_work_path}
       - ${file_storage_data_path}
+      - ${kubectl_version}
   - title: "Optional Settings"
     variables:
       - ${hn_boot_size}
@@ -436,6 +437,9 @@ variables:
   file_storage_data_path:
     type: string
     default: "/data"
+  kubectl_version:
+    type: string
+    default: "v1.23.3"
   hn_boot_size:
     type: integer
     title: "Head Node Server Boot Volume Size"

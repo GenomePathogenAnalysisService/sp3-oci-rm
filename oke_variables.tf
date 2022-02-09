@@ -10,3 +10,6 @@ variable oke_node_ram { default = 16 }
 variable file_storage_work_path { default = "/work" }
 variable file_storage_data_path { default = "/data" }
 #variable node_pool_ssh_public_key { default = "" }
+
+#Kubectl
+variable "kubectl_version" { default = "v1.23.3" }

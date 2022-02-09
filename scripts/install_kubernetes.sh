@@ -8,7 +8,6 @@ export OCI_CLI_AUTH=instance_principal
 oci ce cluster create-kubeconfig --cluster-id ${oke_cluster_id} --auth instance_principal
 
 # Download kubectl
-kubectlVersion="${1:-v1.23.3}"
 curl -LO https://dl.k8s.io/release/${kubectlVersion}/bin/linux/amd64/kubectl
 
 # Checksum verification

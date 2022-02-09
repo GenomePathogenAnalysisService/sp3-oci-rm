@@ -114,6 +114,7 @@ data "template_file" "install_kubernetes" {
 
   vars = {
     oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
+    kubectlVersion = var.kubectl_version
   }
 }
 
