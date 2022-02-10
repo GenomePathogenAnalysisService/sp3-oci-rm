@@ -23,7 +23,7 @@ data "template_file" "headnode_cloud_init" {
     bootstrap_root_sh_content   = base64gzip(data.template_file.bootstrap_root.rendered)
     bootstrap_ubuntu_sh_content = base64gzip(data.template_file.bootstrap_ubuntu.rendered)
     stack_info_content          = base64gzip(data.template_file.stack_info.rendered)
-    install_kubeconfig_sh_content  = base64gzip(data.template_file.install_kubeconfig.rendered)
+    install_kubernetes_sh_content  = base64gzip(data.template_file.install_kubernetes.rendered)
     install_sp3_sh_content      = base64gzip(data.template_file.install_sp3.rendered)
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
   }
@@ -109,11 +109,12 @@ data "template_file" "install_nginx" {
   }
 }
 
-data "template_file" "install_kubeconfig" {
-  template = file("${path.module}/scripts/install_kubeconfig.sh")
+data "template_file" "install_kubernetes" {
+  template = file("${path.module}/scripts/install_kubernetes.sh")
 
   vars = {
     oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
+    kubectlVersion = var.kubectl_version
   }
 }
 

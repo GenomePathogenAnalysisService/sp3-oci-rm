@@ -40,7 +40,7 @@ The `scripts` directory contains the scripts and configuration for Cloud Init.
 - run `bash /tmp/inject_pub_keys.sh` as ubuntu
 - run `bash /tmp/install_nginx.sh` as ubuntu
 - run `bash /tmp/install_sp3.sh` as ubuntu
-- run `bash /tmp/install_kubeconfig.sh` as ubuntu
+- run `bash /tmp/install_kubernetes.sh` as ubuntu
 
 
 `bootstrap_root.sh` is the file containing all the commands that run as root.
@@ -71,4 +71,4 @@ The `scripts` directory contains the scripts and configuration for Cloud Init.
 
 `install_nginx.sh` will, if the option is selected in the stack, pull the wildcard certificate for .dev.gpas.world from the OCI vault secret store and deploy to the Head Node
 
-`install_kubeconfig.sh` will create kubenetes config file using oci cli.
+`install_kubernetes.sh` will create kubenetes config file using oci cli, and install kubectl.

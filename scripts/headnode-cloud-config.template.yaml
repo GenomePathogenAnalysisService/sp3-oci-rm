@@ -22,11 +22,11 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${install_sp3_sh_content}
-  - path: "/tmp/install_kubeconfig.sh"
+  - path: "/tmp/install_kubernetes.sh"
     permissions: "0777"
     encoding: "gzip+base64"
     content: |
-      ${install_kubeconfig_sh_content}
+      ${install_kubernetes_sh_content}
   - path: "/tmp/install_nginx.sh"
     permissions: "0777"
     encoding: "gzip+base64"
@@ -38,15 +38,15 @@ runcmd:
  - /root/bootstrap_root.sh
  - echo "Finished root script."
  - echo "Set permissions on scripts to run as ubuntu user."
- - chown ubuntu:ubuntu /tmp/bootstrap_ubuntu.sh /tmp/stack_info.json /tmp/install_sp3.sh /tmp/inject_pub_keys.sh /tmp/install_kubeconfig.sh
+ - chown ubuntu:ubuntu /tmp/bootstrap_ubuntu.sh /tmp/stack_info.json /tmp/install_sp3.sh /tmp/inject_pub_keys.sh /tmp/install_kubernetes.sh
  - echo "Running ubuntu user script..."
  - sudo -i -H -u ubuntu bash /tmp/bootstrap_ubuntu.sh
  - echo "Finished ubuntu user script."
  - echo "Move stack_info.json..."
  - mv /tmp/stack_info.json /home/ubuntu/stack_info.json
- - echo "Running install kubeconfig script..."
- - sudo -i -H -u ubuntu bash /tmp/install_kubeconfig.sh
- - echo "Finished kubeconfig install script."
+ - echo "Running install kubernetes script..."
+ - sudo -i -H -u ubuntu bash /tmp/install_kubernetes.sh
+ - echo "Finished kubernetes install script."
  - echo "Running install_nginx certs..."
  - sudo -i -H -u ubuntu bash /tmp/install_nginx.sh
  - echo "Running install SP3 script..."

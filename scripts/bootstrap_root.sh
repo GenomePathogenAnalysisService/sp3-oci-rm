@@ -32,9 +32,6 @@ systemctl restart sshd ssh
 
 sleep 10
 
-# Install kubectl
-snap install kubectl --classic
-
 # Install NFS Server
 
 apt-get install nfs-server -y
