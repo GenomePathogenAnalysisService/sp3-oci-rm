@@ -31,4 +31,14 @@ then
     echo '[ERROR] kubectl failed to get pods.'
 fi
 
+# Deploy Metrics Server to OKE
+# Ref Oracle Doc:
+# https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdeployingmetricsserver.htm#Deploying_Kubernetes_Metrics_Server_Using_Kubectl
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.0/components.yaml
+if [ $? -ne 0 ]
+then
+    echo '[ERROR] kubectl failed to deploy metrics-server'
+fi
+
 rm kubectl
