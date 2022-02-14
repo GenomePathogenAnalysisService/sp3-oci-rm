@@ -1,7 +1,7 @@
 resource "oci_identity_dynamic_group" "Autoscaler_DG" {
-  compartment_id = local.Sp3_cid
+  compartment_id = var.tenancy_ocid
 
-  description   = "Group for Autoscaler in compartment ${oci_identity_compartment.oke_component.name}"
+  description   = "Group for Autoscaler in compartment ${local.Sp3_cid}"
   matching_rule = "ALL {instance.compartment.id = '${local.Sp3_cid}'}"
   name          = "${local.Sp3_env_name}_Autoscaler"
 }
@@ -10,15 +10,15 @@ resource "oci_identity_dynamic_group" "Autoscaler_DG" {
 resource "oci_identity_policy" "Autoscaler_Comp_Policy" {
   compartment_id = local.Sp3_cid
 
-  description = "Policy for Autoscaler in compartment ${oci_identity_compartment.oke_component.name}"
+  description = "Policy for Autoscaler in compartment id ${local.Sp3_cid}"
 
   statements = [
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to manage cluster-node-pools in compartment ${oci_identity_compartment.oke_component.name}",
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to manage instance-family in compartment ${oci_identity_compartment.oke_component.name}",
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to use subnets in compartment ${oci_identity_compartment.oke_component.name}",
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to read virtual-network-family in compartment ${oci_identity_compartment.oke_component.name}",
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to use vnics in compartment ${oci_identity_compartment.oke_component.name}",
-  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to inspect compartments in compartment ${oci_identity_compartment.oke_component.name}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to manage cluster-node-pools in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to manage instance-family in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to use subnets in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to read virtual-network-family in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to use vnics in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to inspect compartments in compartment id ${local.Sp3_cid}",
   ]
 
   name = "${local.Sp3_env_name}_Autoscaler_Comp"
@@ -79,10 +79,6 @@ resource "oci_identity_compartment" "sp3_child_comp" {
 resource time_sleep wait_compartment {
   depends_on        = [oci_identity_compartment.sp3_child_comp]
   create_duration   = "30s"
-}
-
-data "oci_identity_compartment" "oke_compartment" {
-    id = local.Sp3_cid
 }
 
 locals { 
