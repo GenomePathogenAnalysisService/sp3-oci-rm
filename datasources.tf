@@ -26,6 +26,7 @@ data "template_file" "headnode_cloud_init" {
     install_kubernetes_sh_content  = base64gzip(data.template_file.install_kubernetes.rendered)
     install_sp3_sh_content      = base64gzip(data.template_file.install_sp3.rendered)
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
+    install_s3bucket_sh_content    = base64gzip(data.template_file.install_s3bucket.rendered)
   }
 }
 
@@ -115,6 +116,15 @@ data "template_file" "install_kubernetes" {
   vars = {
     oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
     kubectlVersion = var.kubectl_version
+  }
+}
+
+data "template_file" "install_s3bucket" {
+  template = file("${path.module}/scripts/install_s3bucket.sh")
+
+  vars = {
+    Gpas_dev_ox_ac_uk_s3_secret_id    = var.Gpas_dev_ox_ac_uk_s3_secret_id
+    Gpas_dev_ox_ac_uk_s3_bucket_names  = var.Gpas_dev_ox_ac_uk_s3_bucket_names
   }
 }
 

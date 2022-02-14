@@ -64,6 +64,8 @@ variableGroups:
       - ${deploy_1k}
       - ${install_certs}
       - ${create_dns}
+      - ${Gpas_dev_ox_ac_uk_s3_secret_id}
+      - ${Gpas_dev_ox_ac_uk_s3_bucket_names}
       - ${show_testing_others}
   - title: "Testing / Other Settings"
     variables:
@@ -490,6 +492,12 @@ variables:
     description: "Size in GB.  Size must be between 50 GB and 32,768 GB (32 TB)."
     minimum: 50
     maximum: 32768
+  Gpas_dev_ox_ac_uk_s3_secret_id:
+    type: string
+    default: "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaahe4ejdiakchjybgrmtefb34nclwavrtdee76qjnca7oob4s6udxa"
+  Gpas_dev_ox_ac_uk_s3_bucket_names:
+    type: string
+    default: "iCSRNlMgzHjZYDCREgFyKQDdDULAztAQ"
   deploy_test:
     type: boolean
     visible: false

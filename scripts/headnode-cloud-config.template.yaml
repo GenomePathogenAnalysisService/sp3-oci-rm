@@ -27,6 +27,11 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${install_kubernetes_sh_content}
+  - path: "/tmp/install_s3bucket.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${install_s3bucket_sh_content}
   - path: "/tmp/install_nginx.sh"
     permissions: "0777"
     encoding: "gzip+base64"
@@ -38,7 +43,7 @@ runcmd:
  - /root/bootstrap_root.sh
  - echo "Finished root script."
  - echo "Set permissions on scripts to run as ubuntu user."
- - chown ubuntu:ubuntu /tmp/bootstrap_ubuntu.sh /tmp/stack_info.json /tmp/install_sp3.sh /tmp/inject_pub_keys.sh /tmp/install_kubernetes.sh
+ - chown ubuntu:ubuntu /tmp/bootstrap_ubuntu.sh /tmp/stack_info.json /tmp/install_sp3.sh /tmp/inject_pub_keys.sh /tmp/install_kubernetes.sh /tmp/install_s3bucket.sh
  - echo "Running ubuntu user script..."
  - sudo -i -H -u ubuntu bash /tmp/bootstrap_ubuntu.sh
  - echo "Finished ubuntu user script."
@@ -52,6 +57,9 @@ runcmd:
  - echo "Running install SP3 script..."
  - sudo -i -H -u ubuntu bash /tmp/install_sp3.sh
  - echo "Finished SP3 install script."
+ - echo "Running install S3 Bucket script..."
+ - sudo -i -H -u ubuntu bash /tmp/install_s3bucket.sh
+ - echo "Finished S3 Bucket install script."
 
 
 final_message: "The system is finally up, after $UPTIME seconds"
