@@ -38,6 +38,8 @@ variable "create_dns" { default = true }
 variable "custom_worker_img" { default = "" }
 variable "select_cust_worker_img" { default = false }
 # variable "environment_type" { default = "" }
+variable "Gpas_dev_ox_ac_uk_s3_secret_id" { default ="ocid1.vaultsecret.oc1.uk-london-1.amaaaaaahe4ejdiakchjybgrmtefb34nclwavrtdee76qjnca7oob4s6udxa" }
+variable "Gpas_dev_ox_ac_uk_s3_bucket_names" { default ="iCSRNlMgzHjZYDCREgFyKQDdDULAztAQ" }
 
 locals {
   compute_flexible_shapes          = ["VM.Standard.E3.Flex", "VM.Standard.E4.Flex", "VM.Standard.A1.Flex", "VM.Optimized3.Flex", "VM.Standard3.Flex"]
