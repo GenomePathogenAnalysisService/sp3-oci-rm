@@ -63,3 +63,41 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     source_type             = "IMAGE"
   }
 }
+
+# Create additional node pool for Autoscaler use
+resource oci_containerengine_node_pool oke_ca_node_pool {
+  cluster_id     = oci_containerengine_cluster.oke_containerengine_cluster.id
+  compartment_id = local.Sp3_cid
+  initial_node_labels {
+    key   = "name"
+    value = "oke_ca_node_pool"
+  }
+  kubernetes_version = "v1.20.11"
+  name               = "oke geno ca node pool"
+  node_config_details {
+    nsg_ids = [
+    ]
+    dynamic "placement_configs" {
+      for_each = data.oci_identity_availability_domains.ads.availability_domains
+      iterator = ad
+      content {
+        availability_domain = ad.value.name
+        subnet_id           = oci_core_subnet.oke_nodes_subset.id
+      }
+    }    
+    size = var.oke_cluster_autoscaler_min_node
+  }
+  node_shape = var.oke_node_shape
+  dynamic "node_shape_config" {
+    for_each = local.is_flexible_node_shape ? [1] : []
+    content {
+      memory_in_gbs = var.oke_node_ram
+      ocpus         = var.oke_node_ocpus
+    }
+  }
+  node_source_details {
+    boot_volume_size_in_gbs = "100"
+    image_id                = "ocid1.image.oc1.uk-london-1.aaaaaaaaynapo7ejseprjcze5x3qedw5shivmw4kbyi4pmrhkqopht43acka"
+    source_type             = "IMAGE"
+  }
+}

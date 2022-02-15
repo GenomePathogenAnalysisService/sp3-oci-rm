@@ -54,6 +54,8 @@ variableGroups:
       - ${file_storage_work_path}
       - ${file_storage_data_path}
       - ${kubectl_version}
+      - ${oke_cluster_autoscaler_min_node}
+      - ${oke_cluster_autoscaler_max_node}
   - title: "Optional Settings"
     variables:
       - ${hn_boot_size}
@@ -440,6 +442,20 @@ variables:
   kubectl_version:
     type: string
     default: "v1.23.3"
+  oke_cluster_autoscaler_min_node:
+    type: integer
+    minimum: 1
+    maximum: 100
+    required: true
+    title: "Minimum number of nodes allowed in autoscaler node pool"
+    description: "Minimum is 1. Cluster Autoscaler will not reduce the number of nodes below this number"
+  oke_cluster_autoscaler_max_node:
+    type: integer
+    minimum: 1
+    maximum: 100
+    required: true
+    title: "Maximum number of nodes allowed in autoscaler node pool"
+    description: "Maximum is 100. Cluster Autoscaler will not increase the number of nodes above this number"
   hn_boot_size:
     type: integer
     title: "Head Node Server Boot Volume Size"
