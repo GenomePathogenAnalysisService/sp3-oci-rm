@@ -31,3 +31,5 @@ cd /home/ubuntu/catsgo/
 . /home/ubuntu/env/bin/activate 
 
 python3 oracle_buckets.py go --bucket-names ${Gpas_dev_ox_ac_uk_s3_bucket_names}
+
+deactivate 
