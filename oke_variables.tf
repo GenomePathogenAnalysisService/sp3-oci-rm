@@ -13,3 +13,7 @@ variable file_storage_data_path { default = "/data" }
 
 #Kubectl
 variable "kubectl_version" { default = "v1.23.3" }
+
+#Cluster Autoscaler
+variable oke_cluster_autoscaler_min_node { default = 3 }
+variable oke_cluster_autoscaler_max_node { default = 10 }
