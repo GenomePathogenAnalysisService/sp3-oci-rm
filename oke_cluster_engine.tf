@@ -73,7 +73,7 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
     value = "oke_ca_node_pool"
   }
   kubernetes_version = "v1.20.11"
-  name               = "oke geno ca node pool"
+  name               = "oke genomics ca node pool"
   node_config_details {
     nsg_ids = [
     ]
@@ -85,7 +85,7 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
         subnet_id           = oci_core_subnet.oke_nodes_subset.id
       }
     }    
-    size = var.oke_cluster_autoscaler_min_node
+    size = var.oke_cluster_autoscaler_min_nodes
   }
   node_shape = var.oke_node_shape
   dynamic "node_shape_config" {
