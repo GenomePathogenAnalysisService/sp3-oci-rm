@@ -7,10 +7,8 @@ resource "oci_identity_dynamic_group" "HeadNode_DG" {
 }
 
 resource "oci_identity_dynamic_group" "Stack_DG" {
-  compartment_id = var.tenancy_ocid
-
   description   = "All Compute instances in stack ${local.Sp3_env_name}"
-  matching_rule = "Any {Any {instance.compartment.id = '${var.tenancy_ocid}'}}"
+  matching_rule = "Any {Any {instance.compartment.id = '${local.Sp3dev_sandbox_cid}'}}"
   name          = "${local.Sp3_env_name}_Stack"
 }
 
