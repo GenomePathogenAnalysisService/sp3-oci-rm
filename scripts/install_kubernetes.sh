@@ -31,6 +31,16 @@ then
     echo '[ERROR] kubectl failed to get pods.'
 fi
 
+echo 'applying oraclek8s...'
+
+kubectl apply -f /tmp/oraclek8s.yaml
+if [ $? -ne 0 ]
+then
+    echo '[ERROR] kubectl failed to apply oraclek8s'
+else
+    echo 'successfully applied oraclek8s'
+fi
+
 # Deploy Metrics Server to OKE
 # Ref Oracle Doc:
 # https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengdeployingmetricsserver.htm#Deploying_Kubernetes_Metrics_Server_Using_Kubectl

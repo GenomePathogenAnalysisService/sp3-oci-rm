@@ -37,6 +37,11 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${install_nginx_sh_content}
+  - path: "/tmp/oraclek8s.yaml"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${oraclek8s_yaml_content}
 
 runcmd:
  - echo "Running root script..."

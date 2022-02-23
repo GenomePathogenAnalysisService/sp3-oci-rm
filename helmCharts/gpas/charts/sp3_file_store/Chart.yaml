@@ -1,5 +1,0 @@
-name: sp3_file_store
-description: Helm chart for SP3 stack in OCI SP3 tenancy.
-type: application
-version: 1.0.0
-apiVersion: v1
