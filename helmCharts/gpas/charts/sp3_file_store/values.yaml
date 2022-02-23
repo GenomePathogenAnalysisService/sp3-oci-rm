@@ -1,5 +1,0 @@
-install: false
-nfs:
-  volumn_name: oke-fss-pv-nextflow-workspace
-  pv_size: 100Gi
-  pvc_size: 50Gi

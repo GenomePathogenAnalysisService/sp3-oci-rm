@@ -27,6 +27,7 @@ data "template_file" "headnode_cloud_init" {
     install_sp3_sh_content      = base64gzip(data.template_file.install_sp3.rendered)
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
     install_s3bucket_sh_content    = base64gzip(data.template_file.install_s3bucket.rendered)
+    oraclek8s_yaml_content    = base64gzip(data.template_file.oraclek8s.rendered)
   }
 }
 
@@ -125,6 +126,15 @@ data "template_file" "install_s3bucket" {
   vars = {
     Gpas_dev_ox_ac_uk_s3_secret_id    = var.Gpas_dev_ox_ac_uk_s3_secret_id
     Gpas_dev_ox_ac_uk_s3_bucket_names  = var.Gpas_dev_ox_ac_uk_s3_bucket_names
+  }
+}
+
+data "template_file" "oraclek8s" {
+  template = file("${path.module}/scripts/oraclek8s.yaml")
+
+  vars = {
+    nfs_ip = oci_file_storage_mount_target.file_storage_mount_oke_target.ip_address
+    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_oke_target.id
   }
 }
 
