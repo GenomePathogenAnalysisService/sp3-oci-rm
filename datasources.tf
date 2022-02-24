@@ -28,6 +28,7 @@ data "template_file" "headnode_cloud_init" {
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
     install_s3bucket_sh_content    = base64gzip(data.template_file.install_s3bucket.rendered)
     oraclek8s_yaml_content    = base64gzip(data.template_file.oraclek8s.rendered)
+    install_custom_nextflow_sh_content    = base64gzip(data.template_file.install_custom_nextflow.rendered)
   }
 }
 
@@ -136,6 +137,10 @@ data "template_file" "oraclek8s" {
     nfs_ip = oci_file_storage_mount_target.file_storage_mount_oke_target.ip_address
     nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_oke_target.id
   }
+}
+
+data "template_file" "install_custom_nextflow" {
+  template = file("${path.module}/scripts/install_custom_nextflow.sh")
 }
 
 locals {
