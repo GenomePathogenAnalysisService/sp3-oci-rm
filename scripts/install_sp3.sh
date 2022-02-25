@@ -98,4 +98,28 @@ echo "---Running /home/ubuntu/sp3/sp3doc/install-oci.sh"
 ssh -i /home/ubuntu/.ssh/self_id_rsa -o StrictHostKeyChecking=no ubuntu@localhost bash /home/ubuntu/sp3/sp3doc/install-oci.sh
 echo "---Finished /home/ubuntu/sp3/sp3doc/install-oci.sh"
 
+
+# Run on_headnode_reboot.sh when headnode is rebooted
+tee <<EOF /home/ubuntu/on_headnode_reboot.sh
+#!/bin/bash
+# Run this script to mount s3 bucket objects when headnode is rebooted and s3 bucket is empty
+
+echo "Mount s3 bucket objects"
+cd /home/ubuntu/catsgo/
+. /home/ubuntu/env/bin/activate
+python3 oracle_buckets.py go --bucket-names ${Gpas_dev_ox_ac_uk_s3_bucket_names}
+deactivate
+EOF
+
+chmod 755 /home/ubuntu/on_headnode_reboot.sh
+
+# Use cron to execute on_headnode_reboot.sh on reboot
+cd /home/ubuntu/
+crontab -l > on_headnode_reboot_cron
+echo "@reboot sleep 60 && /home/ubuntu/on_headnode_reboot.sh \
+      > /home/ubuntu/reboot-cron-output.txt 2>&1" >> on_headnode_reboot_cron
+crontab on_headnode_reboot_cron
+#rm on_headnode_reboot_cron
+
+
 sudo touch /tmp/sp3_up
