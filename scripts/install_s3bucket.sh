@@ -51,8 +51,11 @@ chmod 755 /home/ubuntu/on_headnode_reboot.sh
 # Use cron to execute on_headnode_reboot.sh on reboot
 cd /home/ubuntu/
 crontab -l > on_headnode_reboot_cron
+# On reboot, wait for 60 seconds before running on_headnode_reboot.sh
 echo "@reboot sleep 60 && /home/ubuntu/on_headnode_reboot.sh \
       > /home/ubuntu/reboot-cron-output.txt 2>&1" >> on_headnode_reboot_cron
+# Set up the cron
 crontab on_headnode_reboot_cron
-#rm on_headnode_reboot_cron
+# Remove the temp cron file
+rm on_headnode_reboot_cron
 
