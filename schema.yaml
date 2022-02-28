@@ -44,6 +44,19 @@ variableGroups:
       - ${worker_use_scratch}
       - ${worker_timeout}
       - ${worker_max_create}
+  - title: "OKE Settings"
+    variables:
+      - ${oke_dp_kubernetes_version}
+      - ${oke_dp_node_count}
+      - ${oke_node_shape}
+      - ${oke_node_ocpus}
+      - ${oke_node_ram}
+      - ${file_storage_work_path}
+      - ${file_storage_data_path}
+      - ${kubectl_version}
+      - ${oke_cluster_autoscaler_enabled}
+      - ${oke_cluster_autoscaler_min_nodes}
+      - ${oke_cluster_autoscaler_max_nodes}
   - title: "Optional Settings"
     variables:
       - ${hn_boot_size}
@@ -54,6 +67,8 @@ variableGroups:
       - ${deploy_1k}
       - ${install_certs}
       - ${create_dns}
+      - ${Gpas_dev_ox_ac_uk_s3_secret_id}
+      - ${Gpas_dev_ox_ac_uk_s3_bucket_names}
       - ${show_testing_others}
   - title: "Testing / Other Settings"
     variables:
@@ -118,6 +133,7 @@ variables:
     required: true
     description: "Compute shape for the Bastion server"
     title: "Bastion Server Shape"
+    default: "VM.Standard2.1"
   bastion_ocpus:
     type: integer
     minimum: 1
@@ -183,6 +199,7 @@ variables:
     required: true
     description: "Compute shape for the Head Node"
     title: "Head Node Server Shape"
+    default: "VM.Standard2.2"
   headnode_ocpus:
     type: integer
     minimum: 1
@@ -261,6 +278,7 @@ variables:
     required: true
     description: "Compute shape for the Worker Node"
     title: "Worker Node Server Shape"
+    default: "VM.Standard2.1"
   worker_ocpus:
     type: integer
     minimum: 1
@@ -356,6 +374,96 @@ variables:
     description: "Optional prefix for all Display Names and Hostnames - lower case and digits only - must start with lower case letter"
     pattern: "^[a-z][a-z0-9]+$"
     visible: ${specify_prefix}
+  oke_dp_kubernetes_version:
+    type: string
+    default: "v1.20.11"
+  oke_dp_node_count:
+    type: integer
+    default: 3
+  oke_node_shape:
+    type: oci:core:instanceshape:name
+    required: true
+    title: "OKE Node Shape"
+    description: "Compute shape for nodes in the OKE cluster"
+    default: "VM.Standard2.1"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  oke_node_ocpus:
+    type: integer
+    minimum: 1
+    maximum: 64
+    required: true
+    title: "OKE Node number of CPUs (cores)"
+    description: "You can customize the number of CPU cores to a flexible shape."
+    visible:
+      or:
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.E3.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.E4.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.A1.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Optimized3.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard3.Flex"
+  oke_node_ram:
+    type: integer
+    minimum: 1
+    maximum: 1024
+    required: true
+    title: "OKE Node memory (GB)"
+    description: "You can customize the amount of memory allocated to a flexible shape."
+    visible:
+      or:
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.E3.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.E4.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard.A1.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Optimized3.Flex"
+        - eq:
+            - oke_node_shape
+            - "VM.Standard3.Flex"
+  file_storage_work_path:
+    type: string
+    default: "/work"
+  file_storage_data_path:
+    type: string
+    default: "/data"
+  kubectl_version:
+    type: string
+    default: "v1.23.3"
+  oke_cluster_autoscaler_enabled:
+    title: "Enable Cluster Autoscaler to automatically resize autoscaler node pool based on loads"
+    type: boolean
+    default: true
+    description: "Uncheck to disable cluster node autoscaling"
+  oke_cluster_autoscaler_min_nodes:
+    type: integer
+    minimum: 1
+    maximum: 100
+    required: true
+    title: "Minimum number of nodes allowed in autoscaler node pool"
+    description: "Minimum is 1. Cluster Autoscaler will not reduce the number of nodes below this number"
+  oke_cluster_autoscaler_max_nodes:
+    type: integer
+    minimum: 1
+    maximum: 100
+    required: true
+    title: "Maximum number of nodes allowed in autoscaler node pool"
+    description: "Maximum is 100. Cluster Autoscaler will not increase the number of nodes above this number"
   hn_boot_size:
     type: integer
     title: "Head Node Server Boot Volume Size"
@@ -406,6 +514,12 @@ variables:
     description: "Size in GB.  Size must be between 50 GB and 32,768 GB (32 TB)."
     minimum: 50
     maximum: 32768
+  Gpas_dev_ox_ac_uk_s3_secret_id:
+    type: string
+    default: "ocid1.vaultsecret.oc1.uk-london-1.amaaaaaahe4ejdiakchjybgrmtefb34nclwavrtdee76qjnca7oob4s6udxa"
+  Gpas_dev_ox_ac_uk_s3_bucket_names:
+    type: string
+    default: "iCSRNlMgzHjZYDCREgFyKQDdDULAztAQ"
   deploy_test:
     type: boolean
     visible: false

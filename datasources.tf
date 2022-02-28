@@ -23,8 +23,12 @@ data "template_file" "headnode_cloud_init" {
     bootstrap_root_sh_content   = base64gzip(data.template_file.bootstrap_root.rendered)
     bootstrap_ubuntu_sh_content = base64gzip(data.template_file.bootstrap_ubuntu.rendered)
     stack_info_content          = base64gzip(data.template_file.stack_info.rendered)
+    install_kubernetes_sh_content  = base64gzip(data.template_file.install_kubernetes.rendered)
     install_sp3_sh_content      = base64gzip(data.template_file.install_sp3.rendered)
     install_nginx_sh_content    = base64gzip(data.template_file.install_nginx.rendered)
+    install_s3bucket_sh_content    = base64gzip(data.template_file.install_s3bucket.rendered)
+    oraclek8s_yaml_content    = base64gzip(data.template_file.oraclek8s.rendered)
+    install_custom_nextflow_sh_content    = base64gzip(data.template_file.install_custom_nextflow.rendered)
   }
 }
 
@@ -49,6 +53,10 @@ data "template_file" "headnode_cloud_init" {
 
 data "template_file" "bootstrap_root" {
   template = file("${path.module}/scripts/bootstrap_root.sh")
+
+  vars = {
+    sp3_file_mount_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
+  }
 }
 data "template_file" "bootstrap_ubuntu" {
   template = file("${path.module}/scripts/bootstrap_ubuntu.sh")
@@ -102,6 +110,37 @@ data "template_file" "install_nginx" {
     Gpas_dev_ox_ac_uk_priv_secret_id = local.Gpas_dev_ox_ac_uk_priv_secret_id
     Sp3_env_name                     = local.Sp3_env_name
   }
+}
+
+data "template_file" "install_kubernetes" {
+  template = file("${path.module}/scripts/install_kubernetes.sh")
+
+  vars = {
+    oke_cluster_id  = oci_containerengine_cluster.oke_containerengine_cluster.id
+    kubectlVersion = var.kubectl_version
+  }
+}
+
+data "template_file" "install_s3bucket" {
+  template = file("${path.module}/scripts/install_s3bucket.sh")
+
+  vars = {
+    Gpas_dev_ox_ac_uk_s3_secret_id    = var.Gpas_dev_ox_ac_uk_s3_secret_id
+    Gpas_dev_ox_ac_uk_s3_bucket_names  = var.Gpas_dev_ox_ac_uk_s3_bucket_names
+  }
+}
+
+data "template_file" "oraclek8s" {
+  template = file("${path.module}/scripts/oraclek8s.yaml")
+
+  vars = {
+    nfs_ip = oci_file_storage_mount_target.file_storage_mount_oke_target.ip_address
+    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_oke_target.id
+  }
+}
+
+data "template_file" "install_custom_nextflow" {
+  template = file("${path.module}/scripts/install_custom_nextflow.sh")
 }
 
 locals {

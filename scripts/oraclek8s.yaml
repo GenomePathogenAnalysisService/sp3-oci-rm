@@ -1,0 +1,300 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: default-nextflow-sa-config-maps-management
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+rules:
+  -
+    apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - watch
+      - list
+      - create
+      - delete
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-nextflow-sa-config-maps-management-rb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+subjects:
+  - kind: ServiceAccount
+    name: default-nextflow-sa
+    namespace: default
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  apiGroup: ""
+  kind: Role
+  name: default-nextflow-sa-config-maps-management
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: default-nextflow-sa-pods-management
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+rules:
+  -
+    apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - watch
+      - list
+      - create
+      - delete
+  -
+    apiGroups:
+      - ""
+    resources:
+      - pods/status
+    verbs:
+      - get
+      - watch
+      - list
+  -
+    apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
+      - watch
+      - list
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-nextflow-sa-pods-management-rb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+subjects:
+  - kind: ServiceAccount
+    name: default-nextflow-sa
+    namespace: default
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  apiGroup: ""
+  kind: Role
+  name: default-nextflow-sa-pods-management
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: default-nextflow-sa-pvc-readonly
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+rules:
+  -
+    apiGroups:
+      - ""
+    resources:
+      - persistentvolumeclaims
+    verbs:
+      - get
+      - watch
+      - list
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: default-nextflow-sa-pvc-readonly-rb
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+subjects:
+  - kind: ServiceAccount
+    name: default-nextflow-sa
+    namespace: default
+  - kind: ServiceAccount
+    name: default
+    namespace: default
+roleRef:
+  apiGroup: ""
+  kind: Role
+  name: default-nextflow-sa-pvc-readonly
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default-nextflow-sa
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: default-nextflow-fss-storage-data-pv
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-file-store-settings-data
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+spec:
+  storageClassName: oci-fss
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nosuid
+  nfs:
+    server: "${nfs_ip}"
+    path: "/data"
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: default-nextflow-fss-storage-work-pv
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-file-store-settings-work
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+spec:
+  storageClassName: oci-fss
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - nosuid
+  nfs:
+    server: "${nfs_ip}"
+    path: "/work"
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: default-nextflow-fss-storage-data-pvc
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-file-store-settings-data
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+spec:
+  storageClassName: "oci-fss"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: default-nextflow-fss-storage-data-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: default-nextflow-fss-storage-work-pvc
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-file-store-settings-work
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+spec:
+  storageClassName: "oci-fss"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: default-nextflow-fss-storage-work-pv
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: default-nextflow-fss-storage-class
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-file-store-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+provisioner: oracle.com/oci-fss
+parameters:
+  mntTargetId: "${nfs_mnt_tgt_id}"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: default-nextflow-controller-pod
+  namespace: default
+  labels:
+    app: nf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextflow-controller
+  template:
+    metadata:
+      labels:
+        app: nextflow-controller
+    spec:
+      containers:
+        - name: nextflow-controller
+          image: lhr.ocir.io/lrbvkel2wjot/nftest:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: work
+              mountPath: /work
+          env:
+            - name: POD_TYPE
+              value: "Nextflow_Controller"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: default-nextflow-fss-storage-data-pvc
+        - name: work
+          persistentVolumeClaim:
+            claimName: default-nextflow-fss-storage-work-pvc
+      imagePullSecrets:
+        - name: sp3dockersecret
+      serviceAccountName: default-nextflow-sa
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 169.254.169.254
+        searches:
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+          - dp.oraclevcn.com
+          - node.dp.oraclevcn.com
+        options:
+          - name: ndots
+            value: "5"

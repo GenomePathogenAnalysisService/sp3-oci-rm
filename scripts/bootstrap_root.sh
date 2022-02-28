@@ -30,31 +30,25 @@ sed -i 's/#MaxStartups.*/MaxStartups 50:100:300/g' /etc/ssh/sshd_config
 sed -i 's/#MaxSessions.*/MaxSessions 300/g' /etc/ssh/sshd_config
 systemctl restart sshd ssh
 
-# Partition and Format Block Volumes
-
-echo 'type=83' | sfdisk /dev/oracleoci/oraclevdb
-echo 'type=83' | sfdisk /dev/oracleoci/oraclevdc
-
 sleep 10
 
-mkfs -t ext4 /dev/oracleoci/oraclevdb1
-mkfs -t ext4 /dev/oracleoci/oraclevdc1
+# Install NFS Server
+
+apt-get install nfs-server -y
 
 # Mount the volumes
 
 mkdir /data /work
 
+echo ${sp3_file_mount_ip} 
+
+mount ${sp3_file_mount_ip}:/data /data 
+mount ${sp3_file_mount_ip}:/work /work 
+
 # Add to fstab
 
-echo '/dev/oracleoci/oraclevdb1 /work ext4 defaults 0 0' >> /etc/fstab
-echo '/dev/oracleoci/oraclevdc1 /data ext4 defaults 0 0' >> /etc/fstab
-
-mount /data
-mount /work
-
-# Install NFS Server
-
-apt-get install nfs-server -y
+echo '${sp3_file_mount_ip}:/work /work nfs defaults 0 0' >> /etc/fstab
+echo '${sp3_file_mount_ip}:/data /data nfs defaults 0 0' >> /etc/fstab
 
 # Set mountd and nlockmgr port numbers
 

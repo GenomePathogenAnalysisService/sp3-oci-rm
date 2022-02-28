@@ -111,6 +111,105 @@ locals {
   Privsl001_id = oci_core_security_list.Privsl001.id
 }
 
+resource oci_core_security_list sp3_fss_access_sec_list {
+  compartment_id = local.Sp3_cid
+  display_name = "sp3_fss_access_sec_list"
+
+  egress_security_rules {
+    protocol    = "6"
+    destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    tcp_options {
+      source_port_range {
+        max = "111"
+        min = "111"
+      }
+    }
+  }
+
+  egress_security_rules {
+    protocol    = "6"
+    destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    tcp_options {
+      source_port_range {
+        max = "2050"
+        min = "2048"
+      }
+    }
+  }
+
+  egress_security_rules {
+    protocol    = "17"
+    destination = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    stateless   = false
+    description = "Enable network connectivity to mount FSS."
+    udp_options {
+      source_port_range {
+        max = "111"
+        min = "111"
+      }
+    }
+  }
+
+  ingress_security_rules {
+      protocol  = "6"
+      source    = "10.0.1.0/24"
+      source_type = "CIDR_BLOCK"
+      stateless = false
+      tcp_options {
+          min = 111
+          max = 111
+      }
+      description = "Enable network connectivity to mount FSS."
+  }
+
+  ingress_security_rules {
+      protocol  = "6"
+      source    = "10.0.1.0/24"
+      source_type = "CIDR_BLOCK"
+      stateless = false
+      tcp_options {
+          min = 2048
+          max = 2050
+      }
+      description = "Enable network connectivity to mount FSS."
+  }
+
+
+  ingress_security_rules {
+    protocol  = "17"
+    source    = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless = false
+    udp_options {
+        min = 111
+        max = 111
+    }
+    description = "Enable network connectivity to mount FSS."
+  }
+
+
+  ingress_security_rules {
+    protocol  = "17"
+    source    = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless = false
+    udp_options {
+        min = 2048
+        max = 2050 
+    }
+    description = "Enable network connectivity to mount FSS."
+  }
+
+  vcn_id         = local.Sp3_vcn_id
+}
+
 
 # ------ Create Route Table
 # ------- Update VCN Default Route Table
@@ -188,7 +287,7 @@ resource "oci_core_subnet" "Privsn001" {
   # Optional
   display_name               = "${local.Sp3_env_name}-privsn001"
   dns_label                  = "privsn001"
-  security_list_ids          = [local.Privsl001_id]
+  security_list_ids          = [local.Privsl001_id, oci_core_security_list.sp3_fss_access_sec_list.id]
   route_table_id             = local.Privrt001_id
   dhcp_options_id            = local.Sp3_VCN_dhcp_options_id
   prohibit_public_ip_on_vnic = true
