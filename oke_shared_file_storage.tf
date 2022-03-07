@@ -1,13 +1,13 @@
 
 # ------ Create File Storage File System
 resource oci_file_storage_file_system work_fss {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+  availability_domain = var.mount_ad
   compartment_id      = local.Sp3_cid
   display_name = "File System for Work"
 }
 
 resource oci_file_storage_file_system data_fss {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+  availability_domain = var.mount_ad
   compartment_id      = local.Sp3_cid
   display_name = "File System for Data"
 }
@@ -63,7 +63,7 @@ resource oci_file_storage_export_set file_storage_export_set_data_sp3 {
 
 # ------ Create Mount Targets
 resource oci_file_storage_mount_target file_storage_mount_sp3_target {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+  availability_domain = var.mount_ad
   compartment_id      = local.Sp3_cid
   display_name = "File Storage Mount Target for SP3"
   subnet_id = oci_core_subnet.Privsn001.id
@@ -73,7 +73,7 @@ resource oci_file_storage_mount_target file_storage_mount_sp3_target {
 }
 
 resource oci_file_storage_mount_target file_storage_mount_oke_target {
-  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[2].name
+  availability_domain = var.mount_ad
   compartment_id      = local.Sp3_cid
   display_name = "File Storage Mount Target for OKE"
   subnet_id = oci_core_subnet.oke_nodes_subset.id
