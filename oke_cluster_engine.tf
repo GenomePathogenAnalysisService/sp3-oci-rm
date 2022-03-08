@@ -27,6 +27,13 @@ locals {
   is_flexible_node_shape = contains(local.compute_flexible_shapes, var.oke_node_shape)
 }
 
+data "template_file" "oke_node_cloudinit_content" {
+  template = file("${path.module}/scripts/oke-node.template.sh")
+
+  vars = {
+  }
+}
+
 resource oci_containerengine_node_pool oke_containerengine_node_pool {
   cluster_id     = oci_containerengine_cluster.oke_containerengine_cluster.id
   compartment_id = local.Sp3_cid
@@ -58,9 +65,12 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     }
   }
   node_source_details {
-    boot_volume_size_in_gbs = "100"
+    boot_volume_size_in_gbs = var.oke_boot_vol_size_gb
     image_id                = "ocid1.image.oc1.uk-london-1.aaaaaaaaynapo7ejseprjcze5x3qedw5shivmw4kbyi4pmrhkqopht43acka"
     source_type             = "IMAGE"
+  }
+  node_metadata = {
+    user_data = base64gzip(data.template_file.oke_node_cloudinit_content.rendered)
   }
 }
 
@@ -96,8 +106,11 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
     }
   }
   node_source_details {
-    boot_volume_size_in_gbs = "100"
+    boot_volume_size_in_gbs = var.oke_boot_vol_size_gb
     image_id                = "ocid1.image.oc1.uk-london-1.aaaaaaaaynapo7ejseprjcze5x3qedw5shivmw4kbyi4pmrhkqopht43acka"
     source_type             = "IMAGE"
+  }
+  node_metadata = {
+    user_data = base64gzip(data.template_file.oke_node_cloudinit_content.rendered)
   }
 }
