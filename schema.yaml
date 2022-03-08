@@ -51,6 +51,7 @@ variableGroups:
       - ${oke_node_shape}
       - ${oke_node_ocpus}
       - ${oke_node_ram}
+      - ${oke_boot_vol_size_gb}
       - ${file_storage_work_path}
       - ${file_storage_data_path}
       - ${kubectl_version}
@@ -62,7 +63,6 @@ variableGroups:
       - ${hn_boot_size}
       - ${hn_data_size}
       - ${hn_work_size}
-      - ${use_hp_vol}
       - ${create_child_comp}
       - ${deploy_1k}
       - ${install_certs}
@@ -385,13 +385,14 @@ variables:
     required: true
     title: "OKE Node Shape"
     description: "Compute shape for nodes in the OKE cluster"
-    default: "VM.Standard2.1"
+    default: "VM.Standard.E3.Flex"
     dependsOn:
       compartmentId: ${compartment_ocid}
   oke_node_ocpus:
     type: integer
     minimum: 1
     maximum: 64
+    default: 4
     required: true
     title: "OKE Node number of CPUs (cores)"
     description: "You can customize the number of CPU cores to a flexible shape."
@@ -416,6 +417,7 @@ variables:
     type: integer
     minimum: 1
     maximum: 1024
+    default: 40
     required: true
     title: "OKE Node memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
@@ -436,6 +438,10 @@ variables:
         - eq:
             - oke_node_shape
             - "VM.Standard3.Flex"
+  oke_boot_vol_size_gb:
+    type: integer
+    default: 100
+    minimum: 50
   file_storage_work_path:
     type: string
     default: "/work"
@@ -482,11 +488,6 @@ variables:
     description: "Size in GB.  Size must be between 50 GB and 32,768 GB (32 TB)."
     minimum: 50
     maximum: 32768
-  use_hp_vol:
-    type: boolean
-    title: "Use High Performance Block Volumes for /work and /data?"
-    description: "Leave this setting ticked to use High Performance Block Volumes.  If unset, Balanced Performance Volumes will be used."
-    default: true
   create_child_comp:
     title: "Create a child compartment for the stack"
     type: boolean
