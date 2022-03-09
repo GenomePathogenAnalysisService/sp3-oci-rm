@@ -15,7 +15,6 @@ variableGroups:
       #- ${environment_type}
       - ${randomise_ad}
       - ${ad}
-      - ${mount_ad}
       - ${ssh_pub_key}
       - ${env_name}
       - ${specify_prefix}
@@ -59,6 +58,7 @@ variableGroups:
       - ${oke_cluster_autoscaler_enabled}
       - ${oke_cluster_autoscaler_min_nodes}
       - ${oke_cluster_autoscaler_max_nodes}
+      - ${mount_ad}
   - title: "Optional Settings"
     variables:
       - ${hn_boot_size}
@@ -111,12 +111,6 @@ variables:
     visible: 
       not:
         - ${randomise_ad}
-  mount_ad:
-    type: oci:identity:availabilitydomain:name
-    title: Mount Target AD
-    dependsOn:
-      compartmentId: ${compartment_ocid}
-    required: true
   ssh_pub_key:
     type: oci:core:ssh:publickey
     title: "Public SSH key"
@@ -477,6 +471,12 @@ variables:
     required: true
     title: "Maximum number of nodes allowed in autoscaler node pool"
     description: "Maximum is 100. Cluster Autoscaler will not increase the number of nodes above this number"
+  mount_ad:
+    type: oci:identity:availabilitydomain:name
+    title: Mount Target AD
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+    required: true
   hn_boot_size:
     type: integer
     title: "Head Node Server Boot Volume Size"
