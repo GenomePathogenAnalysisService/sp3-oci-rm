@@ -116,7 +116,6 @@ variables:
     title: Mount Target AD
     dependsOn:
       compartmentId: ${compartment_ocid}
-    enum: [ oci:identity:availabilitydomain:name ]
     required: true
   ssh_pub_key:
     type: oci:core:ssh:publickey
