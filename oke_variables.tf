@@ -19,3 +19,6 @@ variable "kubectl_version" { default = "v1.23.3" }
 variable oke_cluster_autoscaler_enabled { default = true }
 variable oke_cluster_autoscaler_min_nodes { default = 3 }
 variable oke_cluster_autoscaler_max_nodes { default = 10 }
+
+#Mount targets ADs
+variable mount_ad { default = "IfHB:UK-LONDON-1-AD-1" }

@@ -15,6 +15,7 @@ variableGroups:
       #- ${environment_type}
       - ${randomise_ad}
       - ${ad}
+      - ${mount_ad}
       - ${ssh_pub_key}
       - ${env_name}
       - ${specify_prefix}
@@ -109,7 +110,14 @@ variables:
     title: "Availability Domain"
     visible: 
       not:
-        - ${randomise_ad} 
+        - ${randomise_ad}
+  mount_ad:
+    type: oci:identity:availabilitydomain:name
+    title: Mount Target AD
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+    enum: [ oci:identity:availabilitydomain:name ]
+    required: true
   ssh_pub_key:
     type: oci:core:ssh:publickey
     title: "Public SSH key"
