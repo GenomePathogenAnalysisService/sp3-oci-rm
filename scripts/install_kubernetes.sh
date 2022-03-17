@@ -51,4 +51,11 @@ then
     echo '[ERROR] kubectl failed to deploy metrics-server'
 fi
 
+# Deploy Cronjob to delete failed pods
+kubectl apply -f /tmp/cleanup_pods.yaml
+if [ $? -ne 0 ]
+then
+    echo '[ERROR] kubectl failed to apply cleanup_pods cronjob'
+fi
+
 rm kubectl
