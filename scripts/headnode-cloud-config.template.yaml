@@ -47,6 +47,11 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${install_custom_nextflow_sh_content}
+  - path: "/tmp/cleanup_pods.yaml"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${cleanup_pods_yaml_content}
 
 runcmd:
  - echo "Running root script..."
