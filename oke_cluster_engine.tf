@@ -41,7 +41,7 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     key   = "name"
     value = "oke_containerengine_node_pool"
   }
-  kubernetes_version = "v1.21.5"
+  kubernetes_version = "v1.20.11"
   name               = "oke genomics node pool"
   node_config_details {
     nsg_ids = [
@@ -82,7 +82,7 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
     key   = "name"
     value = "oke_ca_node_pool"
   }
-  kubernetes_version = "v1.21.5"
+  kubernetes_version = "v1.20.11"
   name               = "oke genomics ca node pool"
   node_config_details {
     nsg_ids = [

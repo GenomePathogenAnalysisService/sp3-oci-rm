@@ -377,7 +377,7 @@ variables:
     visible: ${specify_prefix}
   oke_dp_kubernetes_version:
     type: string
-    default: "v1.21.5"
+    default: "v1.20.11"
   oke_dp_node_count:
     type: integer
     default: 3
