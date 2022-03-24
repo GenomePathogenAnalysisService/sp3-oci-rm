@@ -233,7 +233,10 @@ resource "kubernetes_deployment" "cluster_autoscaler_deployment" {
             "--balancing-ignore-label=displayName",
             "--balancing-ignore-label=hostname",
             "--balancing-ignore-label=internal_addr",
-            "--balancing-ignore-label=oci.oraclecloud.com/fault-domain"
+            "--balancing-ignore-label=oci.oraclecloud.com/fault-domain",
+            "--skip-nodes-with-system-pods=false",
+            "--skip-nodes-with-local-storage=false",
+            "--scale-down-utilization-threshold=0.5"
           ]
           image_pull_policy = "Always"
           env {
@@ -266,7 +269,7 @@ locals {
   cluster_autoscaler_node_pool                        = oci_containerengine_node_pool.oke_ca_node_pool.id
   cluster_autoscaler_min_nodes                        = var.oke_cluster_autoscaler_min_nodes
   cluster_autoscaler_max_nodes                        = var.oke_cluster_autoscaler_max_nodes
-  cluster_autoscaler_max_node_provision_time          = "25m"
+  cluster_autoscaler_max_node_provision_time          = "15m"
   cluster_autoscaler_scale_down_delay_after_add       = "10m"
   cluster_autoscaler_scale_down_unneeded_time         = "10m"
   cluster_autoscaler_unremovable_node_recheck_timeout = "5m"

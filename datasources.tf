@@ -29,6 +29,7 @@ data "template_file" "headnode_cloud_init" {
     install_s3bucket_sh_content    = base64gzip(data.template_file.install_s3bucket.rendered)
     oraclek8s_yaml_content    = base64gzip(data.template_file.oraclek8s.rendered)
     install_custom_nextflow_sh_content    = base64gzip(data.template_file.install_custom_nextflow.rendered)
+    cleanup_pods_yaml_content    = base64gzip(data.template_file.cleanup_pods.rendered)
   }
 }
 
@@ -141,6 +142,11 @@ data "template_file" "oraclek8s" {
 
 data "template_file" "install_custom_nextflow" {
   template = file("${path.module}/scripts/install_custom_nextflow.sh")
+}
+
+data "template_file" "cleanup_pods" {
+  template = file("${path.module}/scripts/cleanup_pods.yaml")
+
 }
 
 locals {
