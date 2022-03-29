@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: "${cronjob_apiversion}"
 kind: CronJob
 metadata:
   name: cleanup-pods

@@ -146,7 +146,9 @@ data "template_file" "install_custom_nextflow" {
 
 data "template_file" "cleanup_pods" {
   template = file("${path.module}/scripts/cleanup_pods.yaml")
-
+  vars = {
+    cronjob_apiversion = var.oke_dp_kubernetes_version == "v1.20.11" ? "batch/v1beta1" : "batch/v1"
+  }
 }
 
 locals {
