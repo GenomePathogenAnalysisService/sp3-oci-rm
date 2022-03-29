@@ -7,7 +7,7 @@ then
     exit 1
 fi
 
-oci artifacts generic artifact download --file /home/ubuntu/sp3/nextflow --auth instance_principal --artifact-id ocid1.genericartifact.oc1.uk-london-1.0.amaaaaaahe4ejdias3ay4msnugkxsxpvrp4se6tyw6vkvbcalf4f4bxp7dxq
+oci artifacts generic artifact download --file /home/ubuntu/sp3/nextflow --auth instance_principal --artifact-id ocid1.genericartifact.oc1.uk-london-1.0.amaaaaaahe4ejdiawpkym7rrqm2lhvhgodswatpxhsoztgnjj732vi6ltqfa
 if [ $? -ne 0 ]
 then
     echo 'Unable to download nextflow.'
