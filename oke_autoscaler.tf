@@ -263,8 +263,8 @@ provider "kubernetes" {
 }
 
 locals {
-  cluster_autoscaler_supported_k8s_versions           = { "1.18" = "1.18.3-4", "1.19" = "1.19.1-4", "1.20" = "1.20.0-4", "1.21" = "1.21.1-1" } # There's no API to get that list. Need to be updated manually
-  cluster_autoscaler_image                            = "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.20.0-4"
+  cluster_autoscaler_supported_k8s_versions           = { "1.18" = "1.18.3-4", "1.19" = "1.19.1-4", "1.20" = "1.20.0-6", "1.21" = "1.21.1-3" } # There's no API to get that list. Need to be updated manually
+  cluster_autoscaler_image                            = var.oke_dp_kubernetes_version == "v1.20.11" ? "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.20.0-6" : "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.21.1-3"
   cluster_autoscaler_app_version                      = 4
   cluster_autoscaler_node_pool                        = oci_containerengine_node_pool.oke_ca_node_pool.id
   cluster_autoscaler_min_nodes                        = var.oke_cluster_autoscaler_min_nodes
@@ -285,5 +285,4 @@ data "oci_containerengine_cluster_kube_config" "oke" {
   cluster_id = oci_containerengine_cluster.oke_containerengine_cluster.id
   depends_on = [oci_containerengine_node_pool.oke_ca_node_pool]
 }
-
 
