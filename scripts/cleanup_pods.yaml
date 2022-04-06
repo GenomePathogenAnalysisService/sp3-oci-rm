@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: "${cronjob_apiversion}"
 kind: CronJob
 metadata:
   name: cleanup-pods
@@ -16,5 +16,5 @@ spec:
             image: bitnami/kubectl:latest
             imagePullPolicy: IfNotPresent
             command: ["sh", "-c", "kubectl get pods --namespace default  --no-headers=true | grep -e Error -e Completed | \
-                      awk 'match ($5,/[3-9]d*$|[0-9][0-9]d*$|[0-9][0-9][0-9]d*$/){print $1}' | xargs -r kubectl --namespace default delete pod"]
+                      awk 'match ($5,/[3-9]d|[1-9][0-9]d/){print $1}' | xargs -r kubectl --namespace default delete pod"]
           restartPolicy: Never
