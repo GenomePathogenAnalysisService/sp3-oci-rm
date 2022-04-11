@@ -155,7 +155,7 @@ spec:
             - --max-node-provision-time=25m
             - --nodes=${ca_min_nodes}:${ca_max_nodes}:${ca_node_pool}
             - --scale-down-delay-after-add=10m
-            - --scale-down-unneeded-time=10m
+            - --scale-down-unneeded-time=360m
             - --unremovable-node-recheck-timeout=5m
             - --balance-similar-node-groups
             - --balancing-ignore-label=displayName
