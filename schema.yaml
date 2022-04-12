@@ -55,7 +55,6 @@ variableGroups:
       - ${file_storage_work_path}
       - ${file_storage_data_path}
       - ${kubectl_version}
-      - ${oke_cluster_autoscaler_enabled}
       - ${oke_cluster_autoscaler_min_nodes}
       - ${oke_cluster_autoscaler_max_nodes}
       - ${mount_ad}
@@ -452,11 +451,6 @@ variables:
   kubectl_version:
     type: string
     default: "v1.23.3"
-  oke_cluster_autoscaler_enabled:
-    title: "Enable Cluster Autoscaler to automatically resize autoscaler node pool based on loads"
-    type: boolean
-    default: true
-    description: "Uncheck to disable cluster node autoscaling"
   oke_cluster_autoscaler_min_nodes:
     type: integer
     minimum: 1
