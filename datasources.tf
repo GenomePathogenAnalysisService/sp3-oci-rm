@@ -136,8 +136,8 @@ data "template_file" "oraclek8s" {
   template = file("${path.module}/scripts/oraclek8s.yaml")
 
   vars = {
-    nfs_ip = oci_file_storage_mount_target.file_storage_mount_oke_target.ip_address
-    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_oke_target.id
+    nfs_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
+    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_sp3_target.id
   }
 }
 

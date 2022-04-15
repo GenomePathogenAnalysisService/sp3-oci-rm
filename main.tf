@@ -124,7 +124,6 @@ resource "oci_core_instance" "Sp3Headnode" {
   }
 
   depends_on = [
-    oci_core_vcn.oke_cluster_vcn,
     oci_containerengine_cluster.oke_containerengine_cluster,
     oci_containerengine_node_pool.oke_containerengine_node_pool,
   ]
