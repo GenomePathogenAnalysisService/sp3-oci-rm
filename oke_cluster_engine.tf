@@ -2,7 +2,7 @@
 resource oci_containerengine_cluster oke_containerengine_cluster {
   compartment_id = local.Sp3_cid
   endpoint_config {
-    is_public_ip_enabled = "true"
+    is_public_ip_enabled = "false"
     nsg_ids = [
     ]
     # oke_api_subset
