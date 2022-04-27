@@ -18,10 +18,8 @@ Upon completion of the deployment, an Application Information tab will be shown 
 - `iam.tf` creates a dynamic group and policy to allow OCI CLI operations from the Head Node.  Optionally (default = true) creates a new compartment to house all the stack resources
 - `dns.tf` creates an entry in the test domain `dev.gpas.world` for the load balancer public IP
 - `oke_variables` creates variables relating to oke artifacts
-- `oke_vcn` creates a vcn for hosting oke cluster
 - `oke_cluster_engine` creates kubernetes cluster and node pool
-- `oke_shared_file_storage` creates fss storage and mounts for /work and /data relative to legacy vcn and newer oke vcn
-- `oke_helmchart` creates a helm resource that references a helm chart in /helmCharts
+- `oke_shared_file_storage` creates fss storage and mounts for /work and /data relative to legacy vcn
 
 ## Cloud Init Files
 The `scripts` directory contains the scripts and configuration for Cloud Init.
