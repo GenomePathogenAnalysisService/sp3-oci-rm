@@ -7,12 +7,19 @@ then
     exit 1
 fi
 
-oci artifacts generic artifact download --file /home/ubuntu/sp3/nextflow --auth instance_principal --artifact-id ocid1.genericartifact.oc1.uk-london-1.0.amaaaaaahe4ejdiawpkym7rrqm2lhvhgodswatpxhsoztgnjj732vi6ltqfa
+sudo apt remove openjdk-8-jre-headless -y
 if [ $? -ne 0 ]
 then
-    echo 'Unable to download nextflow.'
+    echo 'Unable to download nextflow-22.04.0.'
     exit 1
 fi
 
-sudo mv nextflow /usr/bin
+wget https://github.com/nextflow-io/nextflow/releases/download/v22.04.0/nextflow-22.04.0-all
+if [ $? -ne 0 ]
+then
+    echo 'Unable to download nextflow-22.04.0.'
+    exit 1
+fi
+
+sudo mv nextflow-22.04.0-all /usr/bin/nextflow
 sudo chmod a+x /usr/bin/nextflow
