@@ -12,7 +12,7 @@ fi
 sudo apt remove openjdk-8-jre-headless -y
 if [ $? -ne 0 ]
 then
-    echo 'Unable to download nextflow-22.04.0.'
+    echo 'Unable to uninstall openjdk-8-jre-headless'
     exit 1
 fi
 
