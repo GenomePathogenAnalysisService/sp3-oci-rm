@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This resource and associated terraform code is temporary. It should be removed during review.
+
 cd /home/ubuntu/sp3
 if [ $? -ne 0 ]
 then
