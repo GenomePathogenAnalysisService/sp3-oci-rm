@@ -7,6 +7,13 @@ then
     exit 1
 fi
 
+sudo apt remove openjdk-8-jre-headless -y
+if [ $? -ne 0 ]
+then
+    echo 'Unable to download nextflow-22.04.0.'
+    exit 1
+fi
+
 wget https://github.com/nextflow-io/nextflow/releases/download/v22.04.0/nextflow-22.04.0-all
 if [ $? -ne 0 ]
 then
