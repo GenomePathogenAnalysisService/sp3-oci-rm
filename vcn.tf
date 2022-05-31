@@ -79,17 +79,71 @@ locals {
 }
 
 
-# ------ Create Security List
+# ------ Create Security List (use for node subnet)
 resource "oci_core_security_list" "Privsl001" {
   # Required
   compartment_id = local.Sp3_cid
   vcn_id         = local.Sp3_vcn_id
+  egress_security_rules {
+    description      = "Access to Kubernetes API Endpoint"
+    destination      = "10.0.30.0/28"
+    destination_type = "CIDR_BLOCK"
+    protocol  = "6"
+    stateless = "false"
+  }  
+  egress_security_rules {
+    description      = "Path discovery"
+    destination      = "10.0.30.0/28"
+    destination_type = "CIDR_BLOCK"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol  = "1"
+    stateless = "false"
+  }
+  egress_security_rules {
+    description      = "ICMP Access from Kubernetes Control Plane"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol  = "1"
+    stateless = "false"
+  }
+  egress_security_rules {
+    description      = "Allow nodes to communicate with OKE to ensure correct start-up and continued functioning"
+    destination      = "all-lhr-services-in-oracle-services-network"
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol  = "6"
+    stateless = "false"
+  }
+  egress_security_rules {
+    description      = "Allow pods on one worker node to communicate with pods on other worker nodes"
+    destination      = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    protocol  = "all"
+    stateless = "false"
+  }
   egress_security_rules {
     # Required
     protocol    = "all"
     destination = "0.0.0.0/0"
     # Optional
     destination_type = "CIDR_BLOCK"
+  }
+  ingress_security_rules {
+    description = "Path discovery"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol    = "1"
+    source      = "10.0.30.0/28"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
   }
   ingress_security_rules {
     # Required
@@ -102,7 +156,22 @@ resource "oci_core_security_list" "Privsl001" {
       max = "22"
     }
   }
-
+  ingress_security_rules {
+    description = "Allow pods on one worker node to communicate with pods on other worker nodes"
+    #icmp_options = <<Optional value not found in discovery>>
+    protocol    = "all"
+    source      = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  ingress_security_rules {
+    description = "TCP access from Kubernetes Control Plane"
+    #icmp_options = <<Optional value not found in discovery>>
+    protocol    = "6"
+    source      = "10.0.30.0/28"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
   # Optional
   display_name = "${local.Sp3_env_name}-privsl001"
 }
@@ -211,6 +280,70 @@ resource oci_core_security_list sp3_fss_access_sec_list {
 }
 
 
+resource oci_core_security_list sp3_k8sApiEndpoint_cluster_sec_list {
+  compartment_id = local.Sp3_cid
+  display_name = "sp3-k8sApiEndpoint-cluster-security-list"
+  egress_security_rules {
+    description      = "Path discovery"
+    destination      = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol  = "1"
+    stateless = "false"
+  }
+  egress_security_rules {
+    description      = "All traffic to worker nodes"
+    destination      = "10.0.1.0/24"
+    destination_type = "CIDR_BLOCK"
+    protocol  = "6"
+    stateless = "false"
+  }
+  egress_security_rules {
+    description      = "Allow Kubernetes Control Plane to communicate with OKE"
+    destination      = "all-lhr-services-in-oracle-services-network"
+    destination_type = "SERVICE_CIDR_BLOCK"
+    protocol  = "6"
+    stateless = "false"
+  }
+  ingress_security_rules {
+    description = "Kubernetes worker to control plane communication"
+    protocol    = "6"
+    source      = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  ingress_security_rules {
+    description = "External access to Kubernetes API endpoint"
+    protocol    = "6"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  ingress_security_rules {
+    description = "Path discovery"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol    = "1"
+    source      = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  ingress_security_rules {
+    description = "Kubernetes worker to Kubernetes API endpoint communication"
+    protocol    = "6"
+    source      = "10.0.1.0/24"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+  vcn_id = local.Sp3_vcn_id
+}
+
+
 # ------ Create Route Table
 # ------- Update VCN Default Route Table
 resource "oci_core_default_route_table" "Pubrt001" {
@@ -257,7 +390,8 @@ locals {
 
 
 # ------ Create Subnet
-# ---- Create Public Subnet
+# ---- Create Public Subnet for bastion & oke cluster service
+# Translate to to lb subnet
 resource "oci_core_subnet" "Pubsn001" {
   # Required
   compartment_id = local.Sp3_cid
@@ -277,8 +411,23 @@ locals {
   Pubsn001_domain_name = oci_core_subnet.Pubsn001.subnet_domain_name
 }
 
+
+resource "oci_core_subnet" "sp3_api_subset" {
+  display_name = "${local.Sp3_env_name}-api-subnet"
+  cidr_block     = "10.0.30.0/28"
+  compartment_id = local.Sp3_cid
+  dns_label       = "sp3apisubnet"
+  prohibit_public_ip_on_vnic = "false"
+  route_table_id = local.Privrt001_id
+  security_list_ids = [
+    oci_core_security_list.sp3_k8sApiEndpoint_cluster_sec_list.id,
+  ]
+  vcn_id = local.Sp3_vcn_id
+}
+
+
 # ------ Create Subnet
-# ---- Create Public Subnet
+# ---- Create Private Subnet
 resource "oci_core_subnet" "Privsn001" {
   # Required
   compartment_id = local.Sp3_cid

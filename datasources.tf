@@ -30,6 +30,7 @@ data "template_file" "headnode_cloud_init" {
     oraclek8s_yaml_content    = base64gzip(data.template_file.oraclek8s.rendered)
     install_custom_nextflow_sh_content    = base64gzip(data.template_file.install_custom_nextflow.rendered)
     cleanup_pods_yaml_content    = base64gzip(data.template_file.cleanup_pods.rendered)
+    cluster_autoscaler_yaml_content    = base64gzip(data.template_file.cluster_autoscaler.rendered)
   }
 }
 
@@ -135,8 +136,8 @@ data "template_file" "oraclek8s" {
   template = file("${path.module}/scripts/oraclek8s.yaml")
 
   vars = {
-    nfs_ip = oci_file_storage_mount_target.file_storage_mount_oke_target.ip_address
-    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_oke_target.id
+    nfs_ip = oci_file_storage_mount_target.file_storage_mount_sp3_target.ip_address
+    nfs_mnt_tgt_id = oci_file_storage_mount_target.file_storage_mount_sp3_target.id
   }
 }
 
@@ -146,7 +147,19 @@ data "template_file" "install_custom_nextflow" {
 
 data "template_file" "cleanup_pods" {
   template = file("${path.module}/scripts/cleanup_pods.yaml")
+  vars = {
+    cronjob_apiversion = var.oke_dp_kubernetes_version == "v1.20.11" ? "batch/v1beta1" : "batch/v1"
+  }
+}
 
+data "template_file" "cluster_autoscaler" {
+  template = file("${path.module}/scripts/cluster_autoscaler.yaml")
+  vars = {
+    ca_image = var.oke_dp_kubernetes_version == "v1.20.11" ? "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.20.0-6" : "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.22.2-4"
+    ca_min_nodes = var.oke_cluster_autoscaler_min_nodes
+    ca_max_nodes = var.oke_cluster_autoscaler_max_nodes
+    ca_node_pool = oci_containerengine_node_pool.oke_ca_node_pool.id
+  }
 }
 
 locals {

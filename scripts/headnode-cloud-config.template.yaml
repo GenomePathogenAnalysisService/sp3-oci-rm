@@ -52,6 +52,11 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${cleanup_pods_yaml_content}
+  - path: "/tmp/cluster_autoscaler.yaml"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${cluster_autoscaler_yaml_content}
 
 runcmd:
  - echo "Running root script..."

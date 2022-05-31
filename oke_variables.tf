@@ -1,5 +1,5 @@
 #Cluster
-variable oke_dp_kubernetes_version { default = "v1.20.11" }
+variable oke_dp_kubernetes_version { default = "v1.22.5" }
 variable oke_dp_node_count { default = 3 }
 variable oke_node_shape { default = "VM.Standard.E3.Flex" }
 variable oke_node_ocpus { default = 4 }
@@ -16,7 +16,6 @@ variable file_storage_data_path { default = "/data" }
 variable "kubectl_version" { default = "v1.23.3" }
 
 #Cluster Autoscaler
-variable oke_cluster_autoscaler_enabled { default = true }
 variable oke_cluster_autoscaler_min_nodes { default = 3 }
 variable oke_cluster_autoscaler_max_nodes { default = 10 }
 

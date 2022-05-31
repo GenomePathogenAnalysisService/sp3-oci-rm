@@ -298,3 +298,101 @@ spec:
         options:
           - name: ndots
             value: "5"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pipeline-imagepuller
+  namespace: kube-system
+  labels:
+    app: pipeline-imagepuller
+spec:
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: pipeline-imagepuller
+  template:
+    metadata:
+      labels:
+        app: pipeline-imagepuller
+    spec:
+      tolerations:
+      # this toleration is to have the daemonset runnable on master nodes
+      # remove it if your masters can't run pods
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      initContainers:
+      - name: load-articv132
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/artic-ncov2019-nanopore:v1.13.2
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-articv132"]
+      - name: load-articv133
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/artic-ncov2019-nanopore:v1.13.3
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-articv133"]
+      - name: load-aln2typev9
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/aln2type:v0.2.9
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-aln2typev9"]
+      - name: load-aln2typev10
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/aln2type:v0.2.10
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-aln2typev10"]
+      - name: load-bcftoolsv9
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/bcftools:v0.2.9
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-bcftoolsv9"]
+      - name: load-bcftoolsv10
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/bcftools:v0.2.10
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-bcftoolsv10"]
+      - name: load-fn4-uploadv9
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/fn4_upload:v0.2.9
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-fn4-uploadv9"]
+      - name: load-fn4-uploadv10
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/fn4_upload:v0.2.10
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-fn4-uploadv10"]
+      - name: load-illumina132
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/artic-ncov2019-illumina:v1.13.2
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-illumina132"]
+      - name: load-illumina133
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/artic-ncov2019-illumina:v1.13.3
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-illumina133"]
+      - name: load-oci-pipelinev9
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/oci_pipeline:v0.2.9
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-oci-pipelinev9"]
+      - name: load-oci-pipelinev10
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/oci_pipeline:v0.2.10
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-oci-pipelinev10"]
+      - name: load-pangov9
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/pango:v0.2.9
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-pangov9"]
+      - name: load-pangov10
+        image: lhr.ocir.io/lrbvkel2wjot/oxfordmmm/pango:v0.2.10
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-pangov10"]
+      - name: load-viridian7
+        image: lhr.ocir.io/lrbvkel2wjot/viridian_workflow:v0.3.7
+        imagePullPolicy: IfNotPresent
+        command: ['echo', '-c', "load-viridian7"]
+      containers:
+      - name: load-nextcladev11
+        image: lhr.ocir.io/lrbvkel2wjot/nextclade:1.11.0
+        imagePullPolicy: IfNotPresent
+        command: ['bash', '-c', "trap : TERM INT; sleep infinity & wait"]
+        resources:
+          limits:
+            cpu: 50m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+      terminationGracePeriodSeconds: 30

@@ -2,10 +2,11 @@
 resource oci_containerengine_cluster oke_containerengine_cluster {
   compartment_id = local.Sp3_cid
   endpoint_config {
-    is_public_ip_enabled = "true"
+    is_public_ip_enabled = "false"
     nsg_ids = [
     ]
-    subnet_id = oci_core_subnet.oke_api_subset.id
+    # oke_api_subset
+    subnet_id = oci_core_subnet.sp3_api_subset.id
   }
   image_policy_config {
     is_policy_enabled = "false"
@@ -17,10 +18,10 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
       is_pod_security_policy_enabled = "false"
     }
     service_lb_subnet_ids = [
-      oci_core_subnet.oke_lb_subset.id,
+      local.Pubsn001_id, 
     ]
   }
-  vcn_id = oci_core_vcn.oke_cluster_vcn.id
+  vcn_id = local.Sp3_vcn_id
 }
 
 locals {
@@ -41,7 +42,7 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
     key   = "name"
     value = "oke_containerengine_node_pool"
   }
-  kubernetes_version = "v1.20.11"
+  kubernetes_version = var.oke_dp_kubernetes_version
   name               = "oke genomics node pool"
   node_config_details {
     nsg_ids = [
@@ -51,7 +52,8 @@ resource oci_containerengine_node_pool oke_containerengine_node_pool {
       iterator = ad
       content {
         availability_domain = ad.value.name
-        subnet_id           = oci_core_subnet.oke_nodes_subset.id
+        # oke_nodes_subset
+        subnet_id           = local.Privsn001_id
       }
     }    
     size = var.oke_dp_node_count
@@ -82,7 +84,7 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
     key   = "name"
     value = "oke_ca_node_pool"
   }
-  kubernetes_version = "v1.20.11"
+  kubernetes_version = var.oke_dp_kubernetes_version
   name               = "oke genomics ca node pool"
   node_config_details {
     nsg_ids = [
@@ -92,7 +94,8 @@ resource oci_containerengine_node_pool oke_ca_node_pool {
       iterator = ad
       content {
         availability_domain = ad.value.name
-        subnet_id           = oci_core_subnet.oke_nodes_subset.id
+        #oke_nodes_subset
+        subnet_id           = local.Privsn001_id
       }
     }    
     size = var.oke_cluster_autoscaler_min_nodes

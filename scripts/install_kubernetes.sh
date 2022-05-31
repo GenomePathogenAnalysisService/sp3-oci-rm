@@ -58,4 +58,11 @@ then
     echo '[ERROR] kubectl failed to apply cleanup_pods cronjob'
 fi
 
+# Deploy Cluster Autoscaler 
+kubectl apply -f /tmp/cluster_autoscaler.yaml
+if [ $? -ne 0 ]
+then
+    echo '[ERROR] kubectl failed to deploy cluster autoscaler'
+fi
+
 rm kubectl
