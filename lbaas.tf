@@ -46,18 +46,6 @@ resource "oci_load_balancer_backend_set" "sp3_backendset_443" {
   policy           = "ROUND_ROBIN"
 }
 
-resource "oci_load_balancer_backend" "be_443" {
-  backendset_name  = oci_load_balancer_backend_set.sp3_backendset_443.name
-  backup           = "false"
-  drain            = "false"
-  ip_address       = "10.0.1.2"
-  load_balancer_id = local.Sp3_lb_id
-  offline          = "false"
-  port             = "443"
-  weight           = "1"
-}
-
-
 resource "oci_load_balancer_listener" "sp3_loadbalancer_listener_443" {
   connection_configuration {
     backend_tcp_proxy_protocol_version = "0"
