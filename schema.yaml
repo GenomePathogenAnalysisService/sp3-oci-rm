@@ -417,7 +417,7 @@ variables:
     type: integer
     minimum: 1
     maximum: 1024
-    default: 40
+    default: 16
     required: true
     title: "OKE Node memory (GB)"
     description: "You can customize the amount of memory allocated to a flexible shape."
