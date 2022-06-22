@@ -2,9 +2,9 @@
 variable oke_dp_kubernetes_version { default = "v1.22.5" }
 variable oke_dp_node_count { default = 3 }
 variable oke_node_shape { default = "VM.Standard.E3.Flex" }
-variable oke_node_ocpus { default = 4 }
-variable oke_node_ram { default = 16 }
-variable oke_boot_vol_size_gb { default = 100 }
+variable oke_node_ocpus { default = 6 }
+variable oke_node_ram { default = 32 }
+variable oke_boot_vol_size_gb { default = 256 }
 
 
 #file storage
