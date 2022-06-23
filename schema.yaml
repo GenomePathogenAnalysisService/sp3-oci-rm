@@ -454,17 +454,17 @@ variables:
   oke_cluster_autoscaler_min_nodes:
     type: integer
     minimum: 1
-    maximum: 100
+    maximum: 125
     required: true
     title: "Minimum number of nodes allowed in autoscaler node pool"
     description: "Minimum is 1. Cluster Autoscaler will not reduce the number of nodes below this number"
   oke_cluster_autoscaler_max_nodes:
     type: integer
     minimum: 1
-    maximum: 100
+    maximum: 125
     required: true
     title: "Maximum number of nodes allowed in autoscaler node pool"
-    description: "Maximum is 100. Cluster Autoscaler will not increase the number of nodes above this number"
+    description: "Maximum is 125. Cluster Autoscaler will not increase the number of nodes above this number"
   mount_ad:
     type: oci:identity:availabilitydomain:name
     title: Mount Target AD
