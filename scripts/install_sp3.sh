@@ -15,7 +15,7 @@ chmod 600 /home/ubuntu/.ssh/gitlab_key
 # Clone Git Library using Private Key from OCI Secrets Service
 
 echo "---Cloning SP3 Git"
-GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/gitlab_key -o StrictHostKeyChecking=no' git clone git@gitlab.com:MMMCloudPipeline/sp3.git
+GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/gitlab_key -o StrictHostKeyChecking=no' git clone git@github.com:oxfordmmm/sp3.git
 # variable to change if specific SP3 version is wanted
 SP3_VERSION=''
 if [ ! -z "$${SP3_VERSION}" ]
@@ -37,7 +37,7 @@ echo "---Finished /home/ubuntu/sp3/sp3doc/install-basic.bash"
 
 # Get pipelines from Object Storage
 echo "---Downloading pipelines from object storage"
-COVID_ENV_VERSION=$(curl -s -L -I -o /dev/null -w '%%{url_effective}' https://github.com/GenomePathogenAnalysisService/SARS-COV-2_environments/releases/latest | xargs basename)
+COVID_ENV_VERSION=$(curl -s -L -I -o /dev/null -w '%%{url_effective}' https://github.com/GlobalPathogenAnalysisService/SARS-COV-2_environments/releases/latest | xargs basename)
 oci os object bulk-download -bn artic_images --download-dir /tmp --overwrite --auth instance_principal --prefix $${COVID_ENV_VERSION}
 
 # Move pipeline images to /data
