@@ -19,9 +19,9 @@ fi
 wget https://github.com/nextflow-io/nextflow/releases/download/v22.06.1-edge/nextflow-22.06.1-edge-all
 if [ $? -ne 0 ]
 then
-    echo 'Unable to download nextflow-22.04.0.'
+    echo 'Unable to download nextflow-22.06.1-edge.'
     exit 1
 fi
 
-sudo mv nextflow-22.04.0-all /usr/bin/nextflow
+sudo mv nextflow-22.06.1-edge-all /usr/bin/nextflow
 sudo chmod a+x /usr/bin/nextflow
