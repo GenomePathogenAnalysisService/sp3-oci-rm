@@ -3,7 +3,7 @@ resource "random_string" "deploy_id" {
   length  = 5
   special = false
   upper   = false
-  number  = false
+  numeric  = false
 }
 
 data "template_cloudinit_config" "headnode" {
