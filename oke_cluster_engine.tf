@@ -22,6 +22,10 @@ resource oci_containerengine_cluster oke_containerengine_cluster {
     ]
   }
   vcn_id = local.Sp3_vcn_id
+
+  depends_on = [
+    oci_core_instance.Sp3Bastion
+  ]
 }
 
 locals {

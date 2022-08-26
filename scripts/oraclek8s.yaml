@@ -247,59 +247,6 @@ parameters:
   mntTargetId: "${nfs_mnt_tgt_id}"
 ---
 apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: default-nextflow-controller-pod
-  namespace: default
-  labels:
-    app: nf
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nextflow-controller
-  template:
-    metadata:
-      labels:
-        app: nextflow-controller
-    spec:
-      containers:
-        - name: nextflow-controller
-          image: lhr.ocir.io/lrbvkel2wjot/nftest:latest
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: data
-              mountPath: /data
-            - name: work
-              mountPath: /work
-          env:
-            - name: POD_TYPE
-              value: "Nextflow_Controller"
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: default-nextflow-fss-storage-data-pvc
-        - name: work
-          persistentVolumeClaim:
-            claimName: default-nextflow-fss-storage-work-pvc
-      imagePullSecrets:
-        - name: sp3dockersecret
-      serviceAccountName: default-nextflow-sa
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          - 169.254.169.254
-        searches:
-          - default.svc.cluster.local
-          - svc.cluster.local
-          - cluster.local
-          - dp.oraclevcn.com
-          - node.dp.oraclevcn.com
-        options:
-          - name: ndots
-            value: "5"
----
-apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: pipeline-imagepuller
