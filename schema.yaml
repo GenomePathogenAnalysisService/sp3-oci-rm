@@ -187,7 +187,7 @@ variables:
     dependsOn:
       compartmentId: ${compartment_ocid}
       operatingSystem: "Canonical Ubuntu"
-      operatingSystemVersion: "18.04"
+      operatingSystemVersion: "22.04"
     required: true
     description: "Compute image for the Head Node server"
     title: "Head Node Server Image"
@@ -263,7 +263,7 @@ variables:
     dependsOn:
       compartmentId: ${compartment_ocid}
       operatingSystem: "Canonical Ubuntu"
-      operatingSystemVersion: "20.04"
+      operatingSystemVersion: "22.04"
     required: true
     description: "Compute image for the Worker Nodes"
     title: "Worker Nodes Image"
