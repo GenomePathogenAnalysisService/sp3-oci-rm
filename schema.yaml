@@ -2,7 +2,7 @@
 title: SP3 Build on OCI
 description: Deployment of base SP3 cluster on OCI
 schemaVersion: 1.1.3
-version: "20210315"
+version: "20210316"
 logoUrl: >
   https://objectstorage.uk-london-1.oraclecloud.com/p/gcJUrJ8giUwk_51hi_nTN0Dl66R_7jOOAXU3k3kF-4mOrDCwIoanxChzle0ZAIfm/n/lrbvkel2wjot/b/images/o/mmmlogo_small_130_130.png
 locale: "en"
