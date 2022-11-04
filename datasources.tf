@@ -155,7 +155,7 @@ data "template_file" "cleanup_pods" {
 data "template_file" "cluster_autoscaler" {
   template = file("${path.module}/scripts/cluster_autoscaler.yaml")
   vars = {
-    ca_image = var.oke_dp_kubernetes_version == "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.21.0-4"
+    ca_image = "lhr.ocir.io/oracle/oci-cluster-autoscaler:1.22.0-4"
     ca_min_nodes = var.oke_cluster_autoscaler_min_nodes
     ca_max_nodes = var.oke_cluster_autoscaler_max_nodes
     ca_node_pool = oci_containerengine_node_pool.oke_ca_node_pool.id
