@@ -376,7 +376,7 @@ variables:
     visible: ${specify_prefix}
   oke_dp_kubernetes_version:
     type: string
-    default: "v1.23.4"
+    default: "v1.22.4"
   oke_dp_node_count:
     type: integer
     default: 3
@@ -450,7 +450,7 @@ variables:
     default: "/data"
   kubectl_version:
     type: string
-    default: "v1.23.4"
+    default: "v1.22.4"
   oke_cluster_autoscaler_min_nodes:
     type: integer
     minimum: 1
