@@ -13,7 +13,7 @@ variable file_storage_data_path { default = "/data" }
 #variable node_pool_ssh_public_key { default = "" }
 
 #Kubectl
-variable "kubectl_version" { default = "v1.23.4" }
+variable "kubectl_version" { default = "v1.22.4" }
 
 #Cluster Autoscaler
 variable oke_cluster_autoscaler_min_nodes { default = 3 }
