@@ -1,0 +1,5 @@
+- name: Publish PDF Document
+  uses: shrink/actions-document-publish@v1
+  id: publish-document
+  with:
+    sources: 'documents/front.md documents/*.md documents/back.md'
