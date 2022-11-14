@@ -1,5 +1,19 @@
-- name: Publish PDF Document
-  uses: shrink/actions-document-publish@v1
-  id: publish-document
-  with:
-    sources: 'documents/front.md documents/*.md documents/back.md'
+name: Publish Document to Release
+
+on:
+  push:
+  release:
+    types: [published]
+    
+jobs:
+  publish-and-release:
+    runs-on: ubuntu-latest
+    name: Publish Document to Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Publish PDF Document
+        uses: shrink/actions-document-publish@v1
+        id: publish-document
+        with:
+          sources: 'documents/front.md documents/examples/**/*.md documents/back.md'
