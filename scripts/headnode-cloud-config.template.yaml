@@ -77,9 +77,6 @@ runcmd:
  - echo "Running install SP3 script..."
  - sudo -i -H -u ubuntu bash /tmp/install_sp3.sh
  - echo "Finished SP3 install script."
- - echo "Running install custom nextflow install script..."
- - sudo -i -H -u ubuntu bash /tmp/install_custom_nextflow.sh
- - echo "Finished custom nextflow install script."
  - echo "Running install S3 Bucket script..."
  - sudo -i -H -u ubuntu bash /tmp/install_s3bucket.sh
  - echo "Finished S3 Bucket install script."
