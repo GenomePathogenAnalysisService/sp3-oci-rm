@@ -42,11 +42,6 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${oraclek8s_yaml_content}
-  - path: "/tmp/install_custom_nextflow.sh"
-    permissions: "0777"
-    encoding: "gzip+base64"
-    content: |
-      ${install_custom_nextflow_sh_content}
   - path: "/tmp/cleanup_pods.yaml"
     permissions: "0777"
     encoding: "gzip+base64"
