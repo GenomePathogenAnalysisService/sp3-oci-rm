@@ -159,7 +159,7 @@ metadata:
   name: default-nextflow-sa-token
   annotations:
     kubernetes.io/service-account.name: default-nextflow-sa
-Type: kubernetes.io/service-account-token
+type: kubernetes.io/service-account-token
 ---
 apiVersion: v1
 kind: Secret
