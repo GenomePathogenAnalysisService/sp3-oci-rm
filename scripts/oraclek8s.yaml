@@ -144,16 +144,6 @@ roleRef:
   name: default-nextflow-sa-pvc-readonly
 ---
 apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: default-nextflow-sa
-  namespace: default
-  labels:
-    app.kubernetes.io/name: default-rabc-settings
-    app.kubernetes.io/tier: settings
-    app.kubernetes.io/version: 1.0.0
----
-apiVersion: v1
 kind: Secret
 metadata:
   name: default-nextflow-sa-token
@@ -169,6 +159,26 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: default
 type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: default
+secrets:
+  - name: default-token
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default-nextflow-sa
+  namespace: default
+  labels:
+    app.kubernetes.io/name: default-rabc-settings
+    app.kubernetes.io/tier: settings
+    app.kubernetes.io/version: 1.0.0
+secrets:
+  - name: default-nextflow-sa-token
 ---
 apiVersion: v1
 kind: PersistentVolume
