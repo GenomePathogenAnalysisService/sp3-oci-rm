@@ -21,7 +21,7 @@ SP3_VERSION=''
 if [ ! -z "$${SP3_VERSION}" ]
 then 
     pushd /home/ubuntu/sp3
-    git checkout $${SP3_VERSION}
+    git checkout add_workflows_update
     popd
 fi
 
