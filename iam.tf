@@ -1,12 +1,22 @@
+#This policy could be removed from each stack creation
+#If a policy like this existed with wording like (I'm unsure of exact syntax):
+#`Allow dynamic-group with tag <some tag> to ...`
+#Then by adding a tag to the oci_identity_dynamic_group.HeadNode_DG.name and oci_identity_dynamic_group.Stack_DG.name
+#to match this policy, they should get the access required without the extra policy
 resource "oci_identity_policy" "HeadNode_Sandbox_Artifact_Policy" {
+  #Lives in the sandbox compartment
   compartment_id = local.Sp3dev_sandbox_cid
 
-  description = "Policy for Head Node artifacts read in deployment ${local.Sp3_env_name}"
+  description = "Policy for Head Node and stack artifacts to access sandbox items in deployment ${local.Sp3_env_name}"
 
   statements = [
     "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to read all-artifacts in compartment id ${local.Sp3dev_sandbox_cid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to read secret-family in compartment id ${local.Sp3dev_sandbox_cid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to read objects in compartment id ${local.Sp3dev_sandbox_cid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.Stack_DG.name} to read buckets in compartment id ${local.Sp3dev_sandbox_cid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.Stack_DG.name} to manage objects in compartment id ${local.Sp3dev_sandbox_cid} where any {request.permission='OBJECT_CREATE', request.permission='OBJECT_OVERWRITE', request.permission='OBJECT_INSPECT', request.permission='OBJECT_READ'}",
   ]
-  name = "${local.Sp3_env_name}_HeadNode_Artifacts"
+  name = "${local.Sp3_env_name}_Stack_Sandbox_Access"
 }
 
 resource "oci_identity_dynamic_group" "Autoscaler_DG" {
@@ -19,9 +29,11 @@ resource "oci_identity_dynamic_group" "Autoscaler_DG" {
 
 
 resource "oci_identity_policy" "Autoscaler_Comp_Policy" {
+  #Lives in the stack compartment
+  #Required
   compartment_id = local.Sp3_cid
 
-  description = "Policy for Autoscaler in compartment id ${local.Sp3_cid}"
+  description = "Policy for Autoscaler and HeadNode access in compartment id ${local.Sp3_cid}"
 
   statements = [
   "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to manage cluster-node-pools in compartment id ${local.Sp3_cid}",
@@ -30,9 +42,10 @@ resource "oci_identity_policy" "Autoscaler_Comp_Policy" {
   "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to read virtual-network-family in compartment id ${local.Sp3_cid}",
   "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to use vnics in compartment id ${local.Sp3_cid}",
   "Allow dynamic-group ${oci_identity_dynamic_group.Autoscaler_DG.name} to inspect compartments in compartment id ${local.Sp3_cid}",
+  "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to manage all-resources in compartment id ${local.Sp3_cid}",
   ]
 
-  name = "${local.Sp3_env_name}_Autoscaler_Comp"
+  name = "${local.Sp3_env_name}_Stack_Access"
 }
 
 resource "oci_identity_dynamic_group" "HeadNode_DG" {
@@ -51,52 +64,6 @@ resource "oci_identity_dynamic_group" "Stack_DG" {
   name          = "${local.Sp3_env_name}_Stack"
 }
 
-resource "oci_identity_policy" "HeadNode_Comp_Policy" {
-  compartment_id = local.Sp3_cid
-
-  description = "Policy for Head Node in deployment ${local.Sp3_env_name}"
-
-  # Need to know what the correct permissions required are  <<CHANGE_ME>>
-
-  statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to manage all-resources in compartment id ${local.Sp3_cid}",
-  ]
-  name = "${local.Sp3_env_name}_HeadNode_Comp"
-}
-
-resource "oci_identity_policy" "HeadNode_Secrets_Policy" {
-  compartment_id = local.Sp3dev_sandbox_cid
-
-  description = "Policy for Head Node secrets in deployment ${local.Sp3_env_name}"
-
-  statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to read secret-family in compartment id ${local.Sp3dev_sandbox_cid}",
-  ]
-  name = "${local.Sp3_env_name}_HeadNode_Secrets"
-}
-
-resource "oci_identity_policy" "HeadNode_Sandbox_Object_Policy" {
-  compartment_id = local.Sp3dev_sandbox_cid
-
-  description = "Policy for Head Node object read in deployment ${local.Sp3_env_name}"
-
-  statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.HeadNode_DG.name} to read objects in compartment id ${local.Sp3dev_sandbox_cid}",
-  ]
-  name = "${local.Sp3_env_name}_HeadNode_Object"
-}
-
-resource "oci_identity_policy" "Stack_Sandbox_Object_Policy" {
-  compartment_id = local.Sp3dev_sandbox_cid
-
-  description = "Policy for All Compute instances in stack ${local.Sp3_env_name} to read/write to all Sandbox Buckets"
-
-  statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.Stack_DG.name} to read buckets in compartment id ${local.Sp3dev_sandbox_cid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.Stack_DG.name} to manage objects in compartment id ${local.Sp3dev_sandbox_cid} where any {request.permission='OBJECT_CREATE', request.permission='OBJECT_OVERWRITE', request.permission='OBJECT_INSPECT', request.permission='OBJECT_READ'}"
-  ]
-  name = "${local.Sp3_env_name}_Stack_Object"
-}
 
 resource "oci_identity_compartment" "sp3_child_comp" {
   # If 'create child compartment' is true, create a new compartment else don't
