@@ -18,10 +18,12 @@ echo "---Cloning SP3 Git"
 GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/gitlab_key -o StrictHostKeyChecking=no' git clone git@github.com:oxfordmmm/sp3.git
 # variable to change if specific SP3 version is wanted
 SP3_VERSION=''
-
-pushd /home/ubuntu/sp3
-git checkout code_refactoring
-popd
+if [ ! -z "$${SP3_VERSION}" ]
+then
+    pushd /home/ubuntu/sp3
+    git checkout $${SP3_VERSION}
+    popd
+fi
 
 # Create key pair for SSH to self
 
