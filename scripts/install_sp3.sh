@@ -19,7 +19,7 @@ GIT_SSH_COMMAND='ssh -i /home/ubuntu/.ssh/gitlab_key -o StrictHostKeyChecking=no
 # variable to change if specific SP3 version is wanted
 SP3_VERSION=''
 if [ ! -z "$${SP3_VERSION}" ]
-then 
+then
     pushd /home/ubuntu/sp3
     git checkout $${SP3_VERSION}
     popd
@@ -34,26 +34,6 @@ cat /home/ubuntu/.ssh/self_id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
 echo "---Running /home/ubuntu/sp3/sp3doc/install-basic.bash"
 ssh -i /home/ubuntu/.ssh/self_id_rsa -o StrictHostKeyChecking=no ubuntu@localhost bash /home/ubuntu/sp3/sp3doc/install-basic.bash
 echo "---Finished /home/ubuntu/sp3/sp3doc/install-basic.bash"
-
-# Get pipelines from Object Storage
-echo "---Downloading pipelines from object storage"
-COVID_ENV_VERSION=$(curl -s -L -I -o /dev/null -w '%%{url_effective}' https://github.com/GlobalPathogenAnalysisService/SARS-COV-2_environments/releases/latest | xargs basename)
-oci os object bulk-download -bn artic_images --download-dir /tmp --overwrite --auth instance_principal --prefix $${COVID_ENV_VERSION}
-
-# Move pipeline images to /data
-sudo mv /tmp/*/*.sif /data/images/
-sudo mv /tmp/*/*.simg /data/images/
-sudo mv /tmp/*/*.img /data/images/
-sudo chown root:root /data/images/*.sif
-sudo chown root:root /data/images/*.simg
-sudo chown root:root /data/images/*.img
-
-# Get kraken DB
-oci os object get -bn artic_images --auth instance_principal --name minikraken2_v2_8GB_201904.tgz --file /tmp/minikraken2_v2_8GB_201904.tgz
-sudo mkdir -p /data/databases/kraken2
-sudo tar -xavf /tmp/minikraken2_v2_8GB_201904.tgz -C /data/databases/kraken2
-sudo chown -R root:root /data/databases/kraken2/*
-sudo rm /tmp/minikraken2_v2_8GB_201904.tgz
 
 # Create samples directory
 
