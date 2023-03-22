@@ -35,11 +35,6 @@ echo "---Running /home/ubuntu/sp3/sp3doc/install-basic.bash"
 ssh -i /home/ubuntu/.ssh/self_id_rsa -o StrictHostKeyChecking=no ubuntu@localhost bash /home/ubuntu/sp3/sp3doc/install-basic.bash
 echo "---Finished /home/ubuntu/sp3/sp3doc/install-basic.bash"
 
-# Get pipelines from Object Storage
-echo "---Downloading pipelines from object storage"
-COVID_ENV_VERSION=$(curl -s -L -I -o /dev/null -w '%%{url_effective}' https://github.com/GlobalPathogenAnalysisService/SARS-COV-2_environments/releases/latest | xargs basename)
-oci os object bulk-download -bn artic_images --download-dir /tmp --overwrite --auth instance_principal --prefix $${COVID_ENV_VERSION}
-
 # Create samples directory
 
 sudo mkdir /data/inputs/uploads/oxforduni
